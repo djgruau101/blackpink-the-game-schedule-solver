@@ -26,7 +26,7 @@ suit_by_shape = {  # for 1-4 star cards, the suit of the photocard determines th
 # Stats are ordered in increasing order of strength
 shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
     Square(): [24, 25, 25, 26],
-    Domino(): [24, 25, 25, 26],
+    Domino(): [48, 60, 60, 72],
     ThreeSquareShape.I: [67, 112, 112, 159],
     ThreeSquareShape.L: [90, 90, 126, 144],
     FourSquareShape.I: [80, 160, 240, 320],
@@ -185,101 +185,6 @@ if __name__ == "__main__":
     assert p.get_stars() == 4
     assert p.get_max_level() == 40
     p = Photocard1to4Stars("Summer Trip JISOO #1", 1)
-    
-
-# Levelling up system:
-# 1-star:
-    # "Summer Trip MEMBERNAME #(color number)"
-    # Max level 10
-    # +5 for each stat (lvl 1-9), +10 for 9->10
-    # 24, 25, 25, 26
-        
-# 2-star:
-    # "Autumn Trip MEMBERNAME #(color number)"
-    # Max level 20
-    # +9 weak, +11 for 2 mid, +13 strong (lvl 1-19)
-    # +12 weak +27 for 2 mid, +32 strong (19->20)
-    # 48, 60, 60, 72 
-        
-# 3-star:
-    # Max level 30
-
-    # Straight ("Hanok MEMBERNAME #(color number)"):
-    # +10 weak, +18 for 2 mid, +25 strong (lvl 1-10)
-    # +11 weak, +19 for 2 mid, +26 strong (lvl 10-20)
-    # +12 weak, +20 for 2 mid, +27 strong (lvl 21-29)
-    # +25 weak, +23 for 2 mid, +49 strong (29->30)
-    # TOTAL: +333, +555, +555, +777 (lvl 1->30)
-    # 67, 112, 112, 159
-    
-    # L-shaped ("Resting MEMBERNAME #(color number)"):  
-    # +14 for 2 weak, +20 mid, +23 strong (lvl 1-10)
-    # +15 for 2 weak, +21 mid, +24 strong (lvl 10-20)
-    # +16 for 2 weak, +22 mid, +25 strong (lvl 21-29)
-    # +24 for 2 weak, +33 mid, +39 strong (29->30)
-    # TOTAL: +444, +444, +621, +711 (lvl 1->30)
-    # 90, 90, 126, 144
-        
-# 4-star:
-    # Max level 40
-
-    # Skew (S) (Princess) (CONFIRMED):
-    # +15 weak, +25 for 2 mid, +35 strong (lvl 1-10)
-    # +15 weak, +26 for 2 mid, +37 strong (lvl 11-20)
-    # +17 weak, +27 for 2 mid, +37 strong (lvl 21-30)
-    # +17 weak, +29 for 2 mid, +38 strong (lvl 31-39)
-    # +22 weak, +34 for 2 mid, +73 strong (39->40)
-    # TOTAL: +630, +1050, +1050, +1470 (lvl 1->40)
-    # 120, 200, 200, 280
-
-    # Skew (S-inverse) (Summer Photo Shoot) (CONFIRMED):
-    # +15, +20, +30, +35 (lvl 1-10)
-    # +15, +21, +31, +37 (lvl 11-20)
-    # 16 21 33 38 (lvl 21-30)
-    # 18 23 34 38 (lvl 31-39)
-    # 23 33 44 63 (lvl 39->40)
-    # 120, 160, 240, 280
-
-    # T (Bored) (CONFIRMED):
-    # +20 for 2 weak, +25 mid, +35 strong (lvl 1-10)
-    # +21 for 2 weak, +26 mid, +36 strong (lvl 11-20)
-    # +22, +22, +26, +38 (lvl 21-30)
-    # +22, +22, +29, +40 (lvl 31-39)
-    # +32, +32, +44, +55 (lvl 39->40)
-    # 160, 160, 200, 280
-
-    # Square (Dreamy) (CONFIRMED):
-    # +22 weak, +25 for 2 mid, +28 strong (lvl 1-10)
-    # +23 weak, +26 for 2 mid, +29 strong (lvl 11-20)
-    # +24, +27, +27, +30 (lvl 21-30)
-    # +25, +28, +28, +32 (lvl 31-39)
-    # +31, +43, +43, +46 (lvl 39->40)
-    # 176, 200, 200, 224
-
-    # Straight (Leisurely) (CONFIRMED):
-    # +9, +20, +31, +40 (lvl 1-10)
-    # +9, +21, +32, +42 (lvl 11-20)
-    # +11, +21, +33, +43 (lvl 21-30)
-    # +13, +23, +32, +45 (lvl 31-39)
-    # +22, +33, +43, +65 (lvl 39->40)
-    # 80, 160, 240, 320
-
-    # L-shaped (Colorful) (CONFIRMED):
-    # +14, +20, +26, +40 (lvl 1-10)
-    # +16, +20, +26, +42 (lvl 11-20)
-    # +16, +22, +27, +43 (lvl 21-30)
-    # +18, +23, +28, +44 (lvl 31-39)
-    # +22, +33, +34, +74 (lvl 39->40)
-    # 120, 160, 200, 320
-
-    # Inverse L-shaped (Fairy) (CONFIRMED):
-    # +10, +25, +30, +35 (lvl 1-10)
-    # +10, +27, +31, +36 (lvl 11-20)
-    # +10, +27, +33, +38 (lvl 21-30)
-    # +12, +28, +34, +39 (lvl 31-39)
-    # +22, +33, +44, +64 (lvl 39->40)
-    # 80, 200, 240, 280
-    # Level 10 stats: 170, 425, 510, 595
 
 # My 5-star cards:
     # Max level 50
