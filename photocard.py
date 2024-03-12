@@ -87,13 +87,10 @@ class Photocard1to4Stars(Photocard):
         if suit not in suit_by_shape.keys():
             raise ValueError(f"The card name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
         color_number = int(color_number[1])  # the first character is '#'
-        piece_color = None
-        for color in Color:
+        for color in Color:  # find color
             if color.value == color_number:
-                piece_color = color
+                super().__init__(name, level, suit_by_shape[suit], color)
                 break
-
-        super().__init__(name, level, suit_by_shape[suit], piece_color)
     
 
 # 1-4 star cards: constructor takes name and level only (the name determines the piece and therefore the strong stat)
