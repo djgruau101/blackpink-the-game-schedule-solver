@@ -22,6 +22,70 @@ suit_by_shape = {  # for 1-4 star cards, the suit of the photocard determines th
     "Summer Photo Shoot": FourSquareShape.Z,
 }
 
+# I don't know the base stats for every shape yet
+# Stats are ordered in increasing order of strength
+shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
+    Square(): [24, 25, 25, 26],
+    Domino(): [24, 25, 25, 26],
+    ThreeSquareShape.I: [67, 112, 112, 159],
+    ThreeSquareShape.L: [90, 90, 126, 144],
+    FourSquareShape.I: [80, 160, 240, 320],
+    FourSquareShape.O: [176, 200, 200, 224],
+    FourSquareShape.T: [160, 160, 200, 280],
+    FourSquareShape.J: [80, 200, 240, 280],
+    FourSquareShape.L: [120, 160, 200, 320],
+    FourSquareShape.S: [120, 200, 200, 280],
+    FourSquareShape.Z: [120, 160, 240, 280],
+}
+
+shape_by_boosts = {
+    Square(): [[5, 5, 5, 5], [10, 10, 10, 10]],
+    Domino(): [[9, 11, 11, 13], [22, 27, 27, 32]],
+    ThreeSquareShape.I: [[10, 18, 18, 25],
+                         [11, 19, 19, 26],
+                         [12, 20, 20, 27],
+                         [25, 23, 23, 49]],
+    ThreeSquareShape.L: [[14, 20, 20, 23],
+                         [15, 21, 21, 24],
+                         [16, 22, 22, 25],
+                         [24, 33, 33, 39]],
+    FourSquareShape.I: [[9, 20, 31, 40],
+                        [9, 21, 32, 42],
+                        [11, 21, 33, 43],
+                        [13, 23, 32, 45],
+                        [22, 33, 43, 65]],
+    FourSquareShape.O: [[22, 25, 25, 28],
+                        [23, 26, 26, 29],
+                        [24, 27, 27, 30],
+                        [25, 28, 28, 32],
+                        [31, 43, 43, 46]],
+    FourSquareShape.T: [[20, 20, 25, 35],
+                        [21, 21, 26, 36],
+                        [22, 22, 26, 38],
+                        [22, 22, 29, 40],
+                        [32, 32, 44, 55]],
+    FourSquareShape.J: [[10, 25, 30, 35],
+                        [10, 27, 31, 36],
+                        [10, 27, 33, 38],
+                        [12, 28, 34, 39],
+                        [22, 33, 44, 64]],
+    FourSquareShape.L: [[14, 20, 26, 40],
+                        [16, 20, 26, 42],
+                        [16, 22, 27, 43],
+                        [18, 23, 28, 44],
+                        [22, 33, 34, 74]],
+    FourSquareShape.S: [[15, 25, 25, 35],
+                        [15, 26, 26, 37],
+                        [17, 27, 27, 37],
+                        [17, 29, 29, 38],
+                        [22, 34, 34, 73]],
+    FourSquareShape.Z: [[15, 20, 30, 35],
+                        [15, 21, 31, 37],
+                        [16, 21, 33, 38],
+                        [18, 23, 34, 38],
+                        [23, 33, 44, 63]],
+}
+
 
 class Stat(Enum):
     MUSIC: 1
@@ -94,6 +158,9 @@ class Photocard1to4Stars(Photocard):
                 piece_color = color
                 break
         super().__init__(name, level, suit_by_shape[suit], piece_color)
+        
+    def __eq__(self, other):
+        return isinstance(other, Photocard1to4Stars) and self.get_piece() == other.get_piece() and self.get_member_name() == self.get_member_name()
     
 
 # 1-4 star cards: constructor takes name and level only (the name determines the piece and therefore the strong stat)
@@ -117,6 +184,7 @@ if __name__ == "__main__":
     assert p.get_member_name() == "LISA"
     assert p.get_stars() == 4
     assert p.get_max_level() == 40
+    p = Photocard1to4Stars("Summer Trip JISOO #1", 1)
     
 
 # Levelling up system:
