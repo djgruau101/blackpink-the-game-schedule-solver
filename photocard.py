@@ -34,11 +34,9 @@ class Stat(Enum):
 class Photocard(ABC):
 
     def __init__(self, name, level, piece_shape, piece_color):
-        # Get name of the Blackpink member
-        self.__member_name = self.check_member_name(name)
+        self.__member_name = self.check_member_name(name) # Get name of the Blackpink member
         self.__photocard_name = name
         self.__level = level
-        # Get number of stars
         self.__piece = Piece(piece_shape, piece_color)
 
     @staticmethod
@@ -82,7 +80,7 @@ class Photocard1to4Stars(Photocard):
         # Get name of the Blackpink member
         self.__member_name = self.check_member_name(name)
 
-        # For 1-4 star photocards:
+        # Initialize member name, photocard name, level and piece
         suit, color_number = [values.strip() for values in name.split(self.__member_name)]
         if suit not in suit_by_shape.keys():
             raise ValueError(f"The card name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
