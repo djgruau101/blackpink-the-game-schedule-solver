@@ -4,6 +4,7 @@ from colors import Color
 
 from enum import Enum
 from abc import ABC, abstractmethod
+import re
 
 stats_names = ["music", "acting", "fashion", "charm"]
 member_names = ["JISOO", "JENNIE", "ROSÉ", "LISA"]
@@ -84,11 +85,15 @@ class Photocard1to4Stars(Photocard):
         suit, color_number = [values.strip() for values in name.split(self.__member_name)]
         if suit not in suit_by_shape.keys():
             raise ValueError(f"The card name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
+        if not re.match(r"#[1-4]", color_number):
+            raise ValueError("The end of the card name must end with '#' followed by a number from 1 to 4")
         color_number = int(color_number[1])  # the first character is '#'
+        piece_color = None
         for color in Color:  # find color
             if color.value == color_number:
-                super().__init__(name, level, suit_by_shape[suit], color)
+                piece_color = color
                 break
+        super().__init__(name, level, suit_by_shape[suit], piece_color)
     
 
 # 1-4 star cards: constructor takes name and level only (the name determines the piece and therefore the strong stat)
@@ -106,9 +111,9 @@ if __name__ == "__main__":
     assert p.get_level() == 1
     p.set_level(3)
     assert p.get_level() == 3
-    p = Photocard1to4Stars("Bored LISA #4", 1)
-    assert p.get_piece() == Piece(FourSquareShape.T, Color.RED)
-    assert p.get_photocard_name() == "Bored LISA #4"
+    p = Photocard1to4Stars("Bored LISA #3", 1)
+    assert p.get_piece() == Piece(FourSquareShape.T, Color.BLUE)
+    assert p.get_photocard_name() == "Bored LISA #3"
     assert p.get_member_name() == "LISA"
     assert p.get_stars() == 4
     assert p.get_max_level() == 40
