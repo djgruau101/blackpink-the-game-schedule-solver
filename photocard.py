@@ -9,8 +9,8 @@ import re
 stats_names = ["music", "acting", "fashion", "charm"]
 member_names = ["JISOO", "JENNIE", "ROSÉ", "LISA"]
 suit_by_shape = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
-    "Summer Trip": Square(), # 1 square
-    "Autumn Trip": Domino(), # 2 squares
+    "Summer Trip": Square.SQUARE, # 1 square
+    "Autumn Trip": Domino.DOMINO, # 2 squares
     "Resting": ThreeSquareShape.L,
     "Hanok": ThreeSquareShape.I,
     "Leisurely": FourSquareShape.I,
@@ -25,8 +25,8 @@ suit_by_shape = {  # for 1-4 star cards, the suit of the photocard determines th
 # I don't know the base stats for every shape yet
 # Stats are ordered in increasing order of strength
 shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
-    Square(): [24, 25, 25, 26],
-    Domino(): [48, 60, 60, 72],
+    Square.SQUARE: [24, 25, 25, 26],
+    Domino.DOMINO: [48, 60, 60, 72],
     ThreeSquareShape.I: [67, 112, 112, 159],
     ThreeSquareShape.L: [90, 90, 126, 144],
     FourSquareShape.I: [80, 160, 240, 320],
@@ -39,8 +39,8 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
 }
 
 shape_by_boosts = {
-    Square(): [[5, 5, 5, 5], [10, 10, 10, 10]],
-    Domino(): [[9, 11, 11, 13], [22, 27, 27, 32]],
+    Square.SQUARE: [[5, 5, 5, 5], [10, 10, 10, 10]],
+    Domino.DOMINO: [[9, 11, 11, 13], [22, 27, 27, 32]],
     ThreeSquareShape.I: [[10, 18, 18, 25],
                          [11, 19, 19, 26],
                          [12, 20, 20, 27],
@@ -137,6 +137,9 @@ class Photocard(ABC):
             raise ValueError(f"The level of this card must range from 1 to {self.get_max_level()}")
         self.__level = level
 
+    def get_base_stats(self):
+        return shape_by_base_stats[self.get_piece().get_shape()]
+
 
 class Photocard1to4Stars(Photocard):
 
@@ -170,7 +173,7 @@ class Photocard1to4Stars(Photocard):
 
 if __name__ == "__main__":
     p = Photocard1to4Stars("Summer Trip JISOO #1", 1)
-    assert p.get_piece() == Piece(Square(), Color.GREEN)
+    assert p.get_piece() == Piece(Square.SQUARE, Color.GREEN)
     assert p.get_photocard_name() == "Summer Trip JISOO #1"
     assert p.get_member_name() == "JISOO"
     assert p.get_stars() == 1

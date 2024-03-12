@@ -1,18 +1,10 @@
 from enum import Enum
 
-class Square(object):
-    def __init__(self):
-        self.__shape = "Square"
-
-    def __eq__(self, other):
-        return isinstance(other, Square)
+class Square(Enum):
+    SQUARE = 1
 
 class Domino(object):
-    def __init__(self):
-        self.__shape = "Rectangular"
-
-    def __eq__(self, other):
-        return isinstance(other, Domino)
+    DOMINO = 1
 
 class ThreeSquareShape(Enum):
     """
