@@ -3,7 +3,7 @@ from enum import Enum
 class Square(Enum):
     SQUARE = 1
 
-class Domino(object):
+class Domino(Enum):
     DOMINO = 1
 
 class ThreeSquareShape(Enum):

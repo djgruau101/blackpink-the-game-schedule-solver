@@ -101,9 +101,22 @@ class Photocard(ABC):
     def __init__(self, name, level, piece_shape, piece_color):
         self.__member_name = self.check_member_name(name) # Get name of the Blackpink member
         self.__photocard_name = name
-        self.__level = level
         self.__piece = Piece(piece_shape, piece_color)
-        
+        points = self.rearranged_points_list(shape_by_base_stats[piece_shape].copy(), piece_color.value)
+        boosts = [self.rearranged_points_list(lst, piece_color.value) for lst in shape_by_boosts[piece_shape].copy()]
+        if level > self.get_max_level():
+            raise ValueError(f"This photocard cannot exceed level {self.get_max_level()}")
+        self.__level = level      
+        # 2 stars or less: boost from max_level-1 to max_level is different than for all other levels
+        if self.get_stars() <= 2:
+            # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
+            number_of_boosts = min(level - 1, self.get_max_level() - 2)
+            for _ in range(number_of_boosts):
+                points = [sum(pair) for pair in zip(points, boosts[0])]
+            if level == self.get_max_level():
+                points = [sum(pair) for pair in zip(points, boosts[1])]
+        print(points)
+        self.__stats = dict()
 
     @staticmethod
     def check_member_name(name):
@@ -115,6 +128,14 @@ class Photocard(ABC):
             raise ValueError("Name of the photocard must contain the name of exactly one Blackpink member")
         return member_name_set.pop()
     
+    @staticmethod
+    def rearranged_points_list(lst, n):
+        """Takes the list containing the scores of the stats (originally in increasing order) and returns
+        an adjusted verison of it where each score correspond to its respective stat.
+        The first stat is for music (green), the second stat is for acting (yellow),
+        the third stat is for fashion (blue) and the last stat is for charm (red)."""
+        return lst[-1 * n % len(Color):] + lst[:-1 * n % len(Color)]
+    
     def get_photocard_name(self):
         return self.__photocard_name
     
@@ -123,6 +144,9 @@ class Photocard(ABC):
     
     def get_piece(self):
         return self.__piece
+
+    def get_piece_shape(self):
+        return self.get_piece().get_shape()
     
     def get_stars(self):
         return self.get_piece().get_number_of_squares()
@@ -139,7 +163,7 @@ class Photocard(ABC):
         self.__level = level
 
     def get_base_stats(self):
-        return shape_by_base_stats[self.get_piece().get_shape()]
+        return self.__base_stats
 
 
 class Photocard1to4Stars(Photocard):
@@ -180,22 +204,16 @@ class Photocard5Stars(Photocard):
 # 5 star cards: constructor takes name, piece shape, piece color and level. Piece color determines strong stat.
 
 if __name__ == "__main__":
-    p = Photocard1to4Stars("Summer Trip JISOO #1", 1)
-    assert p.get_piece() == Piece(Square.SQUARE, Color.GREEN)
-    assert p.get_photocard_name() == "Summer Trip JISOO #1"
-    assert p.get_member_name() == "JISOO"
-    assert p.get_stars() == 1
-    assert p.get_max_level() == 10
-    assert p.get_level() == 1
+    p = Photocard1to4Stars("Autumn Trip JISOO #1", 19)
+    assert p.get_piece() == Piece(Domino.DOMINO, Color.GREEN)
     p.set_level(3)
     assert p.get_level() == 3
-    p = Photocard1to4Stars("Bored LISA #3", 1)
+    p = Photocard1to4Stars("Bored LISA #3", 35)
     assert p.get_piece() == Piece(FourSquareShape.T, Color.BLUE)
     assert p.get_photocard_name() == "Bored LISA #3"
     assert p.get_member_name() == "LISA"
     assert p.get_stars() == 4
     assert p.get_max_level() == 40
-    p = Photocard1to4Stars("Summer Trip JISOO #1", 1)
 
 # My 5-star cards:
     # Max level 50
