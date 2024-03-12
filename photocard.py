@@ -103,6 +103,7 @@ class Photocard(ABC):
         self.__photocard_name = name
         self.__level = level
         self.__piece = Piece(piece_shape, piece_color)
+        
 
     @staticmethod
     def check_member_name(name):
@@ -166,10 +167,17 @@ class Photocard1to4Stars(Photocard):
         return isinstance(other, Photocard1to4Stars) and self.get_piece() == other.get_piece() and self.get_member_name() == self.get_member_name()
     
 
+class Photocard5Stars(Photocard):
+
+    __trendy_up_boosts = [0, 35, 85, 175]
+    __signature_boosts = [0, 100, 210, 330, 470, 650]
+
+    def __init__(self, name, level, piece_shape, piece_color, trendy_up, signature):
+        pass
+
+
 # 1-4 star cards: constructor takes name and level only (the name determines the piece and therefore the strong stat)
 # 5 star cards: constructor takes name, piece shape, piece color and level. Piece color determines strong stat.
-
-
 
 if __name__ == "__main__":
     p = Photocard1to4Stars("Summer Trip JISOO #1", 1)
