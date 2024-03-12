@@ -5,8 +5,6 @@ from photocard import Photocard
 class Member(object):
 
     __member_names = ["JENNIE", "ROSÉ", "LISA", "JISOO"]
-    __instances = [None] * 4  # restrict to 4 instances since there are 4 members in Blackpink 
-    __count = 0
 
     def __init__(self, name, music_level, acting_level,
                 fashion_level, charm_level, photocards):
@@ -18,16 +16,6 @@ class Member(object):
         self.__fashion = fashion_level
         self.__charm = charm_level
         self.__photocards = photocards
-
-    def __new__(cls, name, music_level, acting_level, fashion_level, charm_level, photocards):
-        if cls.__count < 4:
-            instance = super().__new__(cls)
-            cls.__instances[cls.__count] = instance
-            cls.__member_names.remove(instance.get_name())
-            cls.__count += 1
-            return instance
-        else:
-            raise ValueError("There are only 4 members in Blackpink")
         
     def get_name(self):
         return self.__name
