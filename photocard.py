@@ -36,6 +36,24 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
     FourSquareShape.L: [120, 160, 200, 320],
     FourSquareShape.S: [120, 200, 200, 280],
     FourSquareShape.Z: [120, 160, 240, 280],
+    FiveSquareShape.F: [0, 0, 0, 0],
+    FiveSquareShape.F_MIRROR: [75, 225, 450, 750],
+    FiveSquareShape.I: [0, 0, 0, 0],
+    FiveSquareShape.L: [0, 0, 0, 0],
+    FiveSquareShape.L_MIRROR: [0, 0, 0, 0],
+    FiveSquareShape.N: [75, 225, 450, 750],
+    FiveSquareShape.N_MIRROR: [75, 225, 450, 750],
+    FiveSquareShape.P: [0, 0, 0, 0],
+    FiveSquareShape.P_MIRROR: [300, 375, 375, 450],
+    FiveSquareShape.T: [75, 225, 450, 750],
+    FiveSquareShape.U: [225, 375, 420, 480],
+    FiveSquareShape.V: [0, 0, 0, 0],
+    FiveSquareShape.W: [150, 435, 450, 465],
+    FiveSquareShape.X: [75, 225, 450, 750],
+    FiveSquareShape.Y: [0, 0, 0, 0],
+    FiveSquareShape.Y_MIRROR: [0, 0, 0, 0],
+    FiveSquareShape.Z: [0, 0, 0, 0],
+    FiveSquareShape.Z_MIRROR: [0, 0, 0, 0],
 }
 
 shape_by_boosts = {
@@ -84,6 +102,114 @@ shape_by_boosts = {
                         [16, 21, 33, 38],
                         [18, 23, 34, 38],
                         [23, 33, 44, 63]],
+    FiveSquareShape.F: [[],
+                        [],
+                        [],
+                        [],
+                        [],
+                        []],
+    FiveSquareShape.F_MIRROR: [[5, 18, 40, 70],
+                               [6, 20, 42, 70],
+                               [7, 22, 43, 71],
+                               [8, 23, 44, 73],
+                               [10, 24, 46, 74],
+                               []],
+    FiveSquareShape.I: [[],
+                        [],
+                        [],
+                        [],
+                        [],
+                        []],
+    FiveSquareShape.L: [[],
+                        [],
+                        [7, 22, 43, 71],
+                        [8, 23, 44, 73],
+                        [10, 24, 46, 74],
+                        [12, 44, 81, 140]],
+    FiveSquareShape.L_MIRROR:  [[],
+                                [],
+                                [],
+                                [],
+                                [],
+                                []],
+    FiveSquareShape.N:  [[5, 18, 40, 70],
+                        [6, 20, 42, 70],
+                        [7, 22, 43, 71],
+                        [],
+                        [],
+                        []],
+    FiveSquareShape.N_MIRROR:  [[5, 18, 40, 70],
+                                [6, 20, 42, 70],
+                                [7, 22, 43, 71],
+                                [8, 23, 44, 73],
+                                [10, 24, 46, 74],
+                                []],
+    FiveSquareShape.P: [[],
+                        [],
+                        [29, 35, 36, 43],
+                        [30, 36, 36, 46],
+                        [31, 37, 38, 48],
+                        [48, 64, 78, 87]],
+    FiveSquareShape.P_MIRROR: [[26, 33, 33, 41],
+                               [28, 34, 34, 42],
+                               [28, 36, 36, 43],
+                               [30, 37, 37, 44],
+                               [31, 39, 39, 45],
+                               []],
+    FiveSquareShape.T: [[5, 18, 40, 70],
+                        [6, 20, 42, 70],
+                        [7, 22, 43, 71],
+                        [8, 23, 44, 73],
+                        [10, 24, 46, 74],   
+                        []],
+    FiveSquareShape.U: [[18, 33, 38, 44],
+                        [20, 34, 39, 45],
+                        [22, 36, 40, 45],
+                        [23, 37, 41, 47],
+                        [24, 39, 43, 48],   
+                        []],
+    FiveSquareShape.V: [[],
+                        [],
+                        [],
+                        [],
+                        [],
+                        []],
+    FiveSquareShape.W: [[12, 39, 40, 42],
+                        [13, 40, 42, 43],
+                        [15, 42, 43, 43],
+                        [15, 43, 44, 46],
+                        [],
+                        []],
+    FiveSquareShape.X: [[5, 18, 40, 70],
+                        [6, 20, 42, 70],
+                        [7, 22, 43, 71],
+                        [8, 23, 44, 73],
+                        [10, 24, 46, 74],
+                        []],
+    FiveSquareShape.Y: [[],
+                        [],
+                        [],
+                        [],
+                        [],
+                        []],
+    FiveSquareShape.Y_MIRROR: [[],
+                               [],
+                               [],
+                               [],
+                               [],
+                               []],
+    FiveSquareShape.Z: [[],
+                        [],
+                        [],
+                        [],
+                        [],
+                        []],
+    FiveSquareShape.Z_MIRROR: [[],
+                               [],
+                               [],
+                               [],
+                               [],
+                               []],
 }
 
 
@@ -115,7 +241,7 @@ class Photocard(ABC):
                 points = [sum(pair) for pair in zip(points, boosts[0])]
             if level == self.get_max_level():
                 points = [sum(pair) for pair in zip(points, boosts[1])]
-        print(points)
+
         self.__stats = dict()
 
     @staticmethod
@@ -135,6 +261,13 @@ class Photocard(ABC):
         The first stat is for music (green), the second stat is for acting (yellow),
         the third stat is for fashion (blue) and the last stat is for charm (red)."""
         return lst[-1 * n % len(Color):] + lst[:-1 * n % len(Color)]
+    
+    @staticmethod
+    def updated_score(points, boosts):
+        """Both points and boosts are iterables containing 4 integers.
+        Returns an updated list of points where each stat's score
+        is added by the boost."""
+        return [sum(pair) for pair in zip(points, boosts)]
     
     def get_photocard_name(self):
         return self.__photocard_name
@@ -162,8 +295,8 @@ class Photocard(ABC):
             raise ValueError(f"The level of this card must range from 1 to {self.get_max_level()}")
         self.__level = level
 
-    def get_base_stats(self):
-        return self.__base_stats
+    def get_stats(self):
+        return self.__stats
 
 
 class Photocard1to4Stars(Photocard):
@@ -306,6 +439,7 @@ if __name__ == "__main__":
     #   (+12, +39, +40, +42) lvl 1-10
     #   (+13, +40, +42, +43) lvl 11-20
     #   (+15, +42, +43, +43) lvl 21-30
+    #   (15,43,44,46) lvl 31-40
 
     # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
     # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
