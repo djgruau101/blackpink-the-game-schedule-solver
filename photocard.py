@@ -237,11 +237,17 @@ class Photocard(ABC):
         if self.get_stars() <= 2:
             # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
             number_of_boosts = min(level - 1, self.get_max_level() - 2)
-            for _ in range(number_of_boosts):
-                points = [sum(pair) for pair in zip(points, boosts[0])]
+            points = self.updated_score(points, boosts[0], number_of_boosts)
             if level == self.get_max_level():
-                points = [sum(pair) for pair in zip(points, boosts[1])]
+                points = self.updated_score(points, boosts[1])
+        # else:
+        #     last_boost_index = len(boosts) - 1 if self.is_max_level() else (self.__level - 1) // 10
+        #     remaining_level_increase = self.__level - 1
+        #     for i in range(last_boost_index):  # increase to max level to be handled outside this for loop afterwards
+        #         max_level_increase_for_current_boost = 9 if i in [0, len(boosts) - 1] else 10
+        #         level_increase = min(current_level - 1, max_level_increase_for_current_boost)
 
+        print(points)
         self.__stats = dict()
 
     @staticmethod
@@ -263,11 +269,13 @@ class Photocard(ABC):
         return lst[-1 * n % len(Color):] + lst[:-1 * n % len(Color)]
     
     @staticmethod
-    def updated_score(points, boosts):
+    def updated_score(points, boosts, level_increase=1):
         """Both points and boosts are iterables containing 4 integers.
+        level_increase is an integer from 1 to 10.
         Returns an updated list of points where each stat's score
-        is added by the boost."""
-        return [sum(pair) for pair in zip(points, boosts)]
+        is added by the boost times the level_increase."""
+        total_boosts = [boost*level_increase for boost in boosts]
+        return [sum(pair) for pair in zip(points, total_boosts)]
     
     def get_photocard_name(self):
         return self.__photocard_name
@@ -294,6 +302,9 @@ class Photocard(ABC):
         if level not in range(1, self.get_max_level()+1):
             raise ValueError(f"The level of this card must range from 1 to {self.get_max_level()}")
         self.__level = level
+
+    def is_max_level(self):
+        return self.get_level() == self.get_max_level()
 
     def get_stats(self):
         return self.__stats
@@ -337,8 +348,8 @@ class Photocard5Stars(Photocard):
 # 5 star cards: constructor takes name, piece shape, piece color and level. Piece color determines strong stat.
 
 if __name__ == "__main__":
-    p = Photocard1to4Stars("Autumn Trip JISOO #1", 19)
-    assert p.get_piece() == Piece(Domino.DOMINO, Color.GREEN)
+    p = Photocard1to4Stars("Summer Trip JISOO #3", 10)
+    assert p.get_piece() == Piece(Square.SQUARE, Color.BLUE)
     p.set_level(3)
     assert p.get_level() == 3
     p = Photocard1to4Stars("Bored LISA #3", 35)
@@ -347,6 +358,8 @@ if __name__ == "__main__":
     assert p.get_member_name() == "LISA"
     assert p.get_stars() == 4
     assert p.get_max_level() == 40
+    p = Photocard1to4Stars("Fairy JENNIE #2", 25)
+    print(p.get_stats())
 
 # My 5-star cards:
     # Max level 50
