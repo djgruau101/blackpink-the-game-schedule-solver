@@ -113,13 +113,13 @@ shape_by_boosts = {
                                [7, 22, 43, 71],
                                [8, 23, 44, 73],
                                [10, 24, 46, 74],
-                               []],
+                               [12, 44, 81, 140]],
     FiveSquareShape.I: [[5, 18, 40, 70],
                         [6, 20, 42, 70],
                         [7, 22, 43, 71],
                         [8, 23, 44, 73],
                         [10, 24, 46, 74],
-                        []],
+                        [12, 44, 81, 140]],
     FiveSquareShape.L: [[],
                         [],
                         [7, 22, 43, 71],
@@ -137,13 +137,13 @@ shape_by_boosts = {
                          [7, 22, 43, 71],
                          [8, 23, 44, 73],
                          [10, 24, 46, 74],
-                         []],
+                         [12, 44, 81, 140]],
     FiveSquareShape.N_MIRROR:  [[5, 18, 40, 70],
                                 [6, 20, 42, 70],
                                 [7, 22, 43, 71],
                                 [8, 23, 44, 73],
                                 [10, 24, 46, 74],
-                                []],
+                                [12, 44, 81, 140]],
     FiveSquareShape.P: [[],
                         [],
                         [29, 35, 36, 43],
@@ -155,19 +155,19 @@ shape_by_boosts = {
                                [28, 36, 36, 43],
                                [30, 37, 37, 44],
                                [31, 39, 39, 45],
-                               []],
+                               [57, 69, 69, 82]],
     FiveSquareShape.T: [[5, 18, 40, 70],
                         [6, 20, 42, 70],
                         [7, 22, 43, 71],
                         [8, 23, 44, 73],
                         [10, 24, 46, 74],   
-                        []],
+                        [12, 44, 81, 140]],
     FiveSquareShape.U: [[18, 33, 38, 44],
                         [20, 34, 39, 45],
                         [22, 36, 40, 45],
                         [23, 37, 41, 47],
                         [24, 39, 43, 48],   
-                        []],
+                        [44, 69, 73, 91]],
     FiveSquareShape.V: [[],
                         [],
                         [],
@@ -179,13 +179,13 @@ shape_by_boosts = {
                         [15, 42, 43, 43],
                         [15, 43, 44, 46],
                         [16, 44, 46, 48],
-                        []],
+                        [33, 76, 81, 87]],
     FiveSquareShape.X: [[5, 18, 40, 70],
                         [6, 20, 42, 70],
                         [7, 22, 43, 71],
                         [8, 23, 44, 73],
                         [10, 24, 46, 74],
-                        []],
+                        [12, 44, 81, 140]],
     FiveSquareShape.Y: [[],
                         [],
                         [],
@@ -340,6 +340,9 @@ class Photocard5Stars(Photocard):
     __trendy_up_boosts = [0, 35, 85, 175]
     __signature_boosts = [0, 100, 210, 330, 470, 650]
 
+    # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
+    # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
+
     def __init__(self, name, level, piece_shape, piece_color, trendy_up, signature):
         pass
 
@@ -360,102 +363,6 @@ if __name__ == "__main__":
     assert p.get_max_level() == 40
     p = Photocard1to4Stars("Fairy JENNIE #2", 25)
     print(p.get_stats())
-
-# My 5-star cards:
-    # Max level 50
-    # P:
-    # Reading Jisoo #2 (blue), Coloring Book Jennie #2 (red):
-    #   Level 21 stats: (842, 1004, 1058, 1316) without trendy up
-    #   (+29, +35, +36, +43) lvl 21-30
-    #   (+30, +36, +36, +46) lvl 31-40
-    #   (+31, +37, +38, +48) lvl 41-49
-    #   (+48, +64, +78, +87) lvl 49->50
-    #
-    # L:
-    # Camping Site Jisoo #2 (green):
-    #   Level 20 stats: (180, 587, 1230, 2080) without trendy up
-    #   (+7, +22, +43, +71) lvl 20-30
-    #   (+8, +23, +44, +73) lvl 31-40
-    #   (+10, +24, +46, +74) lvl 41-49
-    #   (+12, +44, +81, +140) lvl 49->50
-    #
-    # P-mirror:
-    # Candle Jisoo #1 (red):
-    #   Level 1 stats: (300, 375, 375, 450)
-    #   (+26, +33, +33, +41) lvl 1-10
-    #   (+28, +34, +34, +42) lvl 11-20
-    #   (+28, +36, +36, +43) lvl 21-30
-    #   (+30, +37, +37, +44) lvl 31-40
-    #   (+31, +39, +39, +45) lvl 41-49
-    #   lvl 49->50 tbd
-    #
-    # T:
-    # Lisa's Outing (green):
-    #   Level 1 stats: (75, 225, 450, 750)
-    #   (+5, +18, +40, +70) lvl 1-10
-    #   (+6, +20, +42, +70) lvl 11-20
-    #   (+7, +22, +43, +71) lvl 21-30
-    #   (+8, +23, +44, +73) lvl 31-40
-    #   (+10, +24, +46, +74) lvl 41-49
-    #   lvl 49->50 tbd
-    #
-    # F-mirror:
-    # Pajama Jisoo #1 (green):
-    #   Level 1 stats: (75, 225, 450, 750)
-    #   (+5, +18, +40, +70) lvl 1-10
-    #   (+6, +20, +42, +70) lvl 11-20
-    #   (+7, +22, +43, +71) lvl 21-30
-    #   (+8, +23, +44, +73) lvl 31-40
-    #   (+10, +24, +46, +74) lvl 41-49
-    #   lvl 49->50 tbd
-    #
-    # X:
-    # Christmas Morning Rosé (red):
-    #   Level 1 stats: (75, 225, 450, 750)
-    #   (+5, +18, +40, +70) lvl 1-10
-    #   (+6, +20, +42, +70) lvl 11-20
-    #   (+7, +22, +43, +71) lvl 21-30
-    #   (+8, +23, +44, +73) lvl 31-40
-    #   (+10, +24, +46, +74) lvl 41-49
-    #   lvl 49->50 tbd
-    #
-    # U:
-    # Dawn Walk Lisa #2 (blue), Valentine's Day Jisoo (green), Lisa's Chocolate (blue):
-    #   Level 1 stats: (225, 375, 420, 480)
-    #   (+18, +33, +38, +44) lvl 1-10
-    #   (+20, +34, +39, +45) lvl 11-20
-    #   (+22, +36, +40, +45) lvl 21-30
-    #   (+23, +37, +41, +47) lvl 31-40 
-    #   (+24, +39, +43, +48) lvl 41-49
-    #   lvl 49->50 tbd
-    #
-    # N-mirror:
-    # Exercising Lisa #1 (blue), Neon Sign Lisa #1 (red), Ball Game Jennie #1 (yellow):
-    #   Level 1 stats: (75, 225, 450, 750)
-    #   (+5, +18, +40, +70) lvl 1-10
-    #   (+6, +20, +42, +70) lvl 11-20
-    #   (+7, +22, +43, +71) lvl 21-30
-    #   (+8, +23, +44, +73) lvl 31-40
-    #   (+10, +24, +46, +74) lvl 41-49
-    #   lvl 49->50 tbd
-    #
-    # N:
-    # Ball Game Jennie #2 (yellow):
-    #   Level 1 stats: (75, 225, 450, 750)
-    #   (+5, +18, +40, +70) lvl 1-10
-    #   (+6, +20, +42, +70) lvl 11-20
-    #   (+7, +22, +43, +71) lvl 21-30
-    #
-    # W:
-    # Rosé on the Phone #2 (red):
-    #   Level 1 stats: (150, 435, 450, 465)
-    #   (+12, +39, +40, +42) lvl 1-10
-    #   (+13, +40, +42, +43) lvl 11-20
-    #   (+15, +42, +43, +43) lvl 21-30
-    #   (15,43,44,46) lvl 31-40
-
-    # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
-    # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613
 # Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65
