@@ -120,8 +120,8 @@ shape_by_boosts = {
                         [8, 23, 44, 73],
                         [10, 24, 46, 74],
                         [12, 44, 81, 140]],
-    FiveSquareShape.L: [[],
-                        [],
+    FiveSquareShape.L: [[5, 18, 40, 70],
+                        [6, 20, 42, 70],
                         [7, 22, 43, 71],
                         [8, 23, 44, 73],
                         [10, 24, 46, 74],
@@ -214,10 +214,10 @@ shape_by_boosts = {
 
 
 class Stat(Enum):
-    MUSIC: 1
-    ACTING: 2
-    FASHION: 3
-    CHARM: 4
+    MUSIC = 1
+    ACTING = 2
+    FASHION = 3
+    CHARM = 4
 
 
 # One subclass for 1-4 stars, one subclass for 5 stars (since only them have trendy up and signature functionality)
@@ -233,29 +233,34 @@ class Photocard(ABC):
         if level > self.get_max_level():
             raise ValueError(f"This photocard cannot exceed level {self.get_max_level()}")
         self.__level = level      
-        # 2 stars or less: boost from max_level-1 to max_level is different than for all other levels
+        # 1-2 stars: boost from max_level-1 to max_level is different than for all other levels
         if self.get_stars() <= 2:
             # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
             number_of_boosts = min(level - 1, self.get_max_level() - 2)
             points = self.updated_score(points, boosts[0], number_of_boosts)
             if level == self.get_max_level():
                 points = self.updated_score(points, boosts[1])
-        # else:
-        #     last_boost_index = len(boosts) - 1 if self.is_max_level() else (self.__level - 1) // 10
-        #     remaining_level_increase = self.__level - 1
-        #     for i in range(last_boost_index):  # increase to max level to be handled outside this for loop afterwards
-        #         max_level_increase_for_current_boost = 9 if i in [0, len(boosts) - 1] else 10
-        #         level_increase = min(current_level - 1, max_level_increase_for_current_boost)
-
-        print(points)
-        self.__stats = dict()
+        else:
+            # boosts changes at every 10 levels
+            last_boost_index = (self.__level - 1) // 10
+            if self.is_max_level():
+                last_boost_index += 1
+            remaining_level_increase = self.__level - 1  # we add to the level 1 stats which are already defined above
+            for i in range(last_boost_index + 1):
+                max_level_increase_for_current_boost = 9 if i in [0, len(boosts) - 2] else (1 if i == len(boosts) - 1 else 10)
+                level_increase_for_current_boost = min(remaining_level_increase, max_level_increase_for_current_boost)
+                points = self.updated_score(points, boosts[i], level_increase_for_current_boost)
+                remaining_level_increase -= level_increase_for_current_boost
+        self.__stats = dict(zip(Stat, points))
 
     @staticmethod
     def check_member_name(name):
         """Checks if the name of the photocard is valid.
         It is valid only if it contains the name of exactly one Blackpink member.
-        Returns the name of the Blackpink member if valid."""
-        member_name_set = set([word.strip("'s") for word in name.split(" ")]).intersection(member_names)  # test if exactly one member name is in the photocard name
+        Returns the name of the Blackpink member if valid, raise ValueError otherwise."""
+
+        # test if exactly one member name is in the photocard name
+        member_name_set = set([word.strip("'s") for word in name.split(" ")]).intersection(member_names) 
         if len(member_name_set) != 1:
             raise ValueError("Name of the photocard must contain the name of exactly one Blackpink member")
         return member_name_set.pop()
@@ -355,13 +360,12 @@ if __name__ == "__main__":
     assert p.get_piece() == Piece(Square.SQUARE, Color.BLUE)
     p.set_level(3)
     assert p.get_level() == 3
-    p = Photocard1to4Stars("Bored LISA #3", 35)
+    p = Photocard1to4Stars("Bored LISA #3", 27)
     assert p.get_piece() == Piece(FourSquareShape.T, Color.BLUE)
     assert p.get_photocard_name() == "Bored LISA #3"
     assert p.get_member_name() == "LISA"
     assert p.get_stars() == 4
     assert p.get_max_level() == 40
-    p = Photocard1to4Stars("Fairy JENNIE #2", 25)
     print(p.get_stats())
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613
