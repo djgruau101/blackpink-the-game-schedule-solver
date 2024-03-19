@@ -5,6 +5,7 @@ from colors import Color
 from enum import Enum
 from abc import ABC, abstractmethod
 import re
+import csv
 
 stats_names = ["music", "acting", "fashion", "charm"]
 member_names = ["JISOO", "JENNIE", "ROSÉ", "LISA"]
@@ -347,6 +348,7 @@ class Photocard5Stars(Photocard):
 
     # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
     # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
+    # Signature 1: can be done at any level
 
     def __init__(self, name, level, piece_shape, piece_color, trendy_up, signature):
         pass
@@ -356,17 +358,10 @@ class Photocard5Stars(Photocard):
 # 5 star cards: constructor takes name, piece shape, piece color and level. Piece color determines strong stat.
 
 if __name__ == "__main__":
-    p = Photocard1to4Stars("Summer Trip JISOO #3", 10)
-    assert p.get_piece() == Piece(Square.SQUARE, Color.BLUE)
-    p.set_level(3)
-    assert p.get_level() == 3
-    p = Photocard1to4Stars("Bored LISA #3", 27)
-    assert p.get_piece() == Piece(FourSquareShape.T, Color.BLUE)
-    assert p.get_photocard_name() == "Bored LISA #3"
-    assert p.get_member_name() == "LISA"
-    assert p.get_stars() == 4
-    assert p.get_max_level() == 40
-    print(p.get_stats())
+    with open("photocards.csv", "r", newline="", encoding="utf-8-sig") as photocards_data:
+        reader = csv.reader(photocards_data)
+        for row in reader:
+            print(row)
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613
 # Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65
