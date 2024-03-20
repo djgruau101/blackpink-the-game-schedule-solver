@@ -20,13 +20,13 @@ Neon Sign LISA #1,25,0,1,N-MIRROR,Red
 Dawn Walk JENNIE #2,20,1,0,U,Blue
 Morning Walk JISOO #2,20,0,1,U,Green
 Writing JISOO #2,20,0,1,W,Red
-Evening Walk JENNIE #1,20,0,0,X,Yellow
+Evening Walk JENNIE #1,20,0,1,X,Yellow
 JENNIE's Tree Decorating,20,0,0,X,Blue
 LISA is Filming #1,20,0,0,I,Yellow
 LISA is Filming #2,20,0,0,W,Yellow
-ROSÉ is Looking #2,15,1,0,W,Green
-LISA's Closet,15,0,0,T,Blue
-Night Walk LISA #2,15,0,0,U,Red
+ROSÉ is Looking #2,20,1,0,W,Green
+LISA's Closet,20,0,0,T,Blue
+Night Walk LISA #2,20,0,0,U,Red
 Midsummer Night ROSÉ #2,25,0,0,L,Blue
 Bored JENNIE #1,10,,,,
 Bored JENNIE #2,10,,,,
@@ -204,3 +204,6 @@ Summer Trip JISOO #1,1,,,,
 Summer Trip JISOO #2,1,,,,
 Summer Trip JISOO #3,1,,,,
 Summer Trip JISOO #4,1,,,,
+Evening Walk JISOO #1,20,0,1,X,Yellow
+Dawn Walk LISA #1,1,0,0,X,Blue
+Evening Walk JENNIE #2,1,0,0,U,Yellow

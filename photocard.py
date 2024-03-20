@@ -8,20 +8,18 @@ import re
 import csv
 
 stats_names = ["music", "acting", "fashion", "charm"]
+piece_colors = ["Green", "Yellow", "Blue", "Red"]
+suits = ["Summer Trip", "Autumn Trip", "Resting", "Hanok", "Leisurely", 
+         "Dreamy", "Bored", "Fairy", "Colorful", "Princess", "Summer Photo Shoot"]
+shapes_1_to_4_stars = [Square.SQUARE, Domino.DOMINO] + list(ThreeSquareShape) + list(FourSquareShape)
+
 member_names = ["JISOO", "JENNIE", "ROSÉ", "LISA"]
-suit_by_shape = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
-    "Summer Trip": Square.SQUARE, # 1 square
-    "Autumn Trip": Domino.DOMINO, # 2 squares
-    "Resting": ThreeSquareShape.L,
-    "Hanok": ThreeSquareShape.I,
-    "Leisurely": FourSquareShape.I,
-    "Dreamy": FourSquareShape.O,
-    "Bored": FourSquareShape.T,
-    "Fairy": FourSquareShape.J,
-    "Colorful": FourSquareShape.L,
-    "Princess": FourSquareShape.S,
-    "Summer Photo Shoot": FourSquareShape.Z,
-}
+five_square_shapes = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
+                      "N", "N-MIRROR", "P", "P-MIRROR",
+                      "T", "U", "V", "W", "X",
+                      "Y", "Y-MIRROR", "Z", "Z-MIRROR"]
+
+suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
 
 # I don't know the base stats for every shape yet
 # Stats are ordered in increasing order of strength
@@ -242,7 +240,7 @@ class Photocard(ABC):
             if level == self.get_max_level():
                 points = self.updated_score(points, boosts[1])
         else:
-            # boosts changes at every 10 levels
+            # boosts change at every 10 levels
             last_boost_index = (self.__level - 1) // 10
             if self.is_max_level():
                 last_boost_index += 1
@@ -282,6 +280,9 @@ class Photocard(ABC):
         is added by the boost times the level_increase."""
         total_boosts = [boost*level_increase for boost in boosts]
         return [sum(pair) for pair in zip(points, total_boosts)]
+
+    def __str__(self):
+        return f"Photocard({self.get_photocard_name()}, {self.get_level()})"
     
     def get_photocard_name(self):
         return self.__photocard_name
@@ -343,27 +344,46 @@ class Photocard1to4Stars(Photocard):
 
 class Photocard5Stars(Photocard):
 
-    __trendy_up_boosts = [0, 35, 85, 175]
     __signature_boosts = [0, 100, 210, 330, 470, 650]
+    __trendy_up_boosts = [0, 35, 85, 175]
 
     # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
     # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
     # Signature 1: can be done at any level
 
-    def __init__(self, name, level, piece_shape, piece_color, trendy_up, signature):
-        pass
+    def __init__(self, name, level, piece_shape, piece_color, signature, trendy_up):
+        super().__init__(name, level, piece_shape, piece_color)
 
 
 # 1-4 star cards: constructor takes name and level only (the name determines the piece and therefore the strong stat)
 # 5 star cards: constructor takes name, piece shape, piece color and level. Piece color determines strong stat.
 
 if __name__ == "__main__":
+    photocards = []
     with open("photocards.csv", "r", newline="", encoding="utf-8-sig") as photocards_data:
-        reader = csv.reader(photocards_data)
-        for row in reader:
-            print(row)
+        reader = csv.DictReader(photocards_data)
+        data = list(reader)
+    for row in data:
+        row = {k: v for k, v in row.items() if v is not None and v != ''}  # remove entries that have no value
+        if int(row["Level"]) > 0:
+            if any([row["Name"].startswith(suit) for suit in suits]):
+                photocards.append(Photocard1to4Stars(row["Name"], int(row["Level"])))
+            else:
+                piece_shape = FiveSquareShape(five_square_shapes.index(row["Piece Shape"]) + 1)
+                piece_color = Color(piece_colors.index(row["Piece Color"]) + 1)
+                
+                photocards.append(Photocard5Stars(row["Name"], int(row["Level"]),
+                                                  piece_shape, piece_color,
+                                                  int(row["Signature"]), int(row["Trendy Up"])))
+    for photocard in photocards:
+        print(photocard)
 
-# Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613
-# Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65
+# level up the two Lisa 5 star cards from 15 to 20! Will test it out.  
+
+
+
+
+# Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
+# Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
 
 #Last level I'm stuck at: need blue Roses
