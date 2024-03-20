@@ -447,16 +447,18 @@ if __name__ == "__main__":
                                                   int(row["Signature"]), int(row["Trendy Up"])))
     photocards.sort(key = lambda photocard: photocard.get_photocard_name())
     print(photocards)
-    c = photocards[[p.get_photocard_name() for p in photocards].index("Dawn Walk JENNIE #2")]
+    c = photocards[[p.get_photocard_name() for p in photocards].index("Morning Walk JISOO #2")]
     print(c.get_stats())
-    c.add_trendy_up()
+    c.add_signature()
     print(c.get_stats())
     ####
-    c.set_trendy_up(0)
+    c.set_signature(0)
     print(c.get_stats())
-    c.set_trendy_up(2)
+    c.set_signature(2)
     print(c.get_stats())
-    c.set_trendy_up(1)
+    c.set_signature(1)
+    print(c.get_stats())
+    c.set_signature(0)
     print(c.get_stats())
     # for photocard in photocards:
     #     print(photocard.get_photocard_name(), photocard.get_stats())
