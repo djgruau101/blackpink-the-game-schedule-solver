@@ -14,10 +14,10 @@ suits = ["Summer Trip", "Autumn Trip", "Resting", "Hanok", "Leisurely",
 shapes_1_to_4_stars = [Square.SQUARE, Domino.DOMINO] + list(ThreeSquareShape) + list(FourSquareShape)
 
 member_names = ["JISOO", "JENNIE", "ROSÉ", "LISA"]
-five_square_shapes = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
-                      "N", "N-MIRROR", "P", "P-MIRROR",
-                      "T", "U", "V", "W", "X",
-                      "Y", "Y-MIRROR", "Z", "Z-MIRROR"]
+five_square_shapes_strings = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
+                              "N", "N-MIRROR", "P", "P-MIRROR",
+                              "T", "U", "V", "W", "X",
+                              "Y", "Y-MIRROR", "Z", "Z-MIRROR"]
 
 suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
 
@@ -37,7 +37,7 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
     FourSquareShape.Z: [120, 160, 240, 280],
     FiveSquareShape.F: [75, 225, 450, 750],
     FiveSquareShape.F_MIRROR: [75, 225, 450, 750],
-    FiveSquareShape.I: [150, 435, 450, 465],
+    FiveSquareShape.I: [75, 225, 450, 750],
     FiveSquareShape.L: [75, 225, 450, 750],
     FiveSquareShape.L_MIRROR: [75, 225, 450, 750],
     FiveSquareShape.N: [75, 225, 450, 750],
@@ -414,7 +414,7 @@ if __name__ == "__main__":
             if any([row["Name"].startswith(suit) for suit in suits]):
                 photocards.append(Photocard1to4Stars(row["Name"], int(row["Level"])))
             else:
-                piece_shape = FiveSquareShape(five_square_shapes.index(row["Piece Shape"]) + 1)
+                piece_shape = FiveSquareShape(five_square_shapes_strings.index(row["Piece Shape"]) + 1)
                 piece_color = Color(piece_colors.index(row["Piece Color"]) + 1)
                 
                 photocards.append(Photocard5Stars(row["Name"], int(row["Level"]),
@@ -424,6 +424,8 @@ if __name__ == "__main__":
     for photocard in photocards:
         print(photocard.get_photocard_name(), photocard.get_stats())
         # as of now, photocards with piece of shape FiveSquareShape.P have empty stats because the early boosts are unknown for now
+
+# Test trendy up Dawn Walk JENNIE #2, JENNIE's Tree Decorating
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
 # Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
