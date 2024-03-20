@@ -280,9 +280,12 @@ class Photocard(ABC):
         is added by the boost times the level_increase."""
         total_boosts = [boost*level_increase for boost in boosts]
         return [sum(pair) for pair in zip(points, total_boosts)]
+    
+    def __repr__(self):
+        return f"Photocard(name={self.get_photocard_name()}, level={self.get_level()}, Piece={self.get_piece()})"
 
     def __str__(self):
-        return f"Photocard({self.get_photocard_name()}, {self.get_level()}, {self.get_piece()})"
+        return f"Photocard with name={self.get_photocard_name()}, level={self.get_level()}, Piece={self.get_piece()}"
     
     def get_photocard_name(self):
         return self.__photocard_name
@@ -356,6 +359,8 @@ class Photocard5Stars(Photocard):
 
     __signature_boosts = [0, 100, 210, 330, 470, 650]
     __trendy_up_boosts = [0, 35, 85, 175]
+    __MAX_SIGNATURE = 5
+    __MAX_TRENDY_UP = 3
 
     # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
     # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
@@ -371,6 +376,12 @@ class Photocard5Stars(Photocard):
         self.__trendy_up = trendy_up
         self.__boost_stats(self.__signature_boosts[signature] + self.__trendy_up_boosts[trendy_up])
 
+    def __repr__(self):
+        return super().__repr__() + f", signature={self.get_signature()}, trendy_up={self.get_trendy_up()})"
+
+    def __str__(self):
+        return super().__str__() + f", signature={self.get_signature()}, trendy_up={self.get_trendy_up()})"
+
     def __boost_stats(self, points):
         for stat, score in super().get_stats().items():
             super().get_stats()[stat] = score + points
@@ -382,22 +393,36 @@ class Photocard5Stars(Photocard):
         return self.__trendy_up
     
     def set_signature(self, signature):
-        pass
+        if signature not in range(len(self.__signature_boosts)):
+            print("Signature value must be from 0 to 5")
+        else:
+            old_signature = self.__signature
+            self.__signature = signature
+            self.__boost_stats(self.__signature_boosts[signature] - self.__signature_boosts[old_signature])
 
     def set_trendy_up(self, trendy_up):
-        pass
+        if trendy_up not in range(len(self.__trendy_up_boosts)):
+            print("Trendy Up value must be from 0 to 3")
+        else:
+            old_trendy_up = self.__trendy_up
+            self.__trendy_up = trendy_up
+            self.__boost_stats(self.__trendy_up_boosts[trendy_up] - self.__trendy_up_boosts[old_trendy_up])
 
     def add_signature(self):
-        return self.set_signature(self.get_signature() + 1)
+        if self.is_max_signature():
+            print("Signature is at its maximum level, which is 5")
+        self.set_signature(self.get_signature() + 1)
     
     def add_trendy_up(self):
-        return self.set_trendy_up(self.get_trendy_up() + 1)
+        if self.is_max_trendy_up():
+            print("Trendy Up is at its maximum level, which is 3")
+        self.set_trendy_up(self.get_trendy_up() + 1)
     
     def is_max_signature(self):
-        return self.get_signature() == 5
+        return self.get_signature() == self.__MAX_SIGNATURE
     
     def is_max_trendy_up(self):
-        return self.get_trendy_up() == 3
+        return self.get_trendy_up() == self.__MAX_TRENDY_UP
 
 
 # 1-4 star cards: constructor takes name and level only (the name determines the piece and therefore the strong stat)
@@ -421,8 +446,20 @@ if __name__ == "__main__":
                                                   piece_shape, piece_color,
                                                   int(row["Signature"]), int(row["Trendy Up"])))
     photocards.sort(key = lambda photocard: photocard.get_photocard_name())
-    for photocard in photocards:
-        print(photocard.get_photocard_name(), photocard.get_stats())
+    print(photocards)
+    c = photocards[[p.get_photocard_name() for p in photocards].index("Dawn Walk JENNIE #2")]
+    print(c.get_stats())
+    c.add_trendy_up()
+    print(c.get_stats())
+    ####
+    c.set_trendy_up(0)
+    print(c.get_stats())
+    c.set_trendy_up(2)
+    print(c.get_stats())
+    c.set_trendy_up(1)
+    print(c.get_stats())
+    # for photocard in photocards:
+    #     print(photocard.get_photocard_name(), photocard.get_stats())
         # as of now, photocards with piece of shape FiveSquareShape.P have empty stats because the early boosts are unknown for now
 
 # Test trendy up Dawn Walk JENNIE #2, JENNIE's Tree Decorating
