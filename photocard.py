@@ -362,7 +362,37 @@ class Photocard5Stars(Photocard):
     # Signature 1: can be done at any level
 
     def __init__(self, name, level, piece_shape, piece_color, signature, trendy_up):
+        if signature not in range(len(self.__signature_boosts)):
+            raise ValueError("Signature value must be from 0 to 5")
+        if trendy_up not in range(len(self.__trendy_up_boosts)):
+            raise ValueError("Trendy Up value must be from 0 to 3")
         super().__init__(name, level, piece_shape, piece_color)
+        self.__signature = signature
+        self.__trendy_up = trendy_up
+
+    def get_signature(self):
+        return self.__signature
+
+    def get_trendy_up(self):
+        return self.__trendy_up
+    
+    def set_signature(self, signature):
+        pass
+
+    def set_trendy_up(self, trendy_up):
+        pass
+
+    def add_signature(self):
+        return self.set_signature(self.get_signature() + 1)
+    
+    def add_trendy_up(self):
+        return self.set_trendy_up(self.get_trendy_up() + 1)
+    
+    def is_max_signature(self):
+        return self.get_signature() == 5
+    
+    def is_max_trendy_up(self):
+        return self.get_trendy_up() == 3
 
 
 # 1-4 star cards: constructor takes name and level only (the name determines the piece and therefore the strong stat)
@@ -385,8 +415,9 @@ if __name__ == "__main__":
                 photocards.append(Photocard5Stars(row["Name"], int(row["Level"]),
                                                   piece_shape, piece_color,
                                                   int(row["Signature"]), int(row["Trendy Up"])))
+    photocards.sort(key = lambda photocard: photocard.get_photocard_name())
     for photocard in photocards:
-        photocard.display_photocard_info()
+        print(photocard.get_photocard_name(), photocard.get_stats())
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
 # Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
