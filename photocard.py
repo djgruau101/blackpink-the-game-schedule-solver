@@ -369,6 +369,11 @@ class Photocard5Stars(Photocard):
         super().__init__(name, level, piece_shape, piece_color)
         self.__signature = signature
         self.__trendy_up = trendy_up
+        self.__boost_stats(self.__signature_boosts[signature] + self.__trendy_up_boosts[trendy_up])
+
+    def __boost_stats(self, points):
+        for stat, score in super().get_stats().items():
+            super().get_stats()[stat] = score + points
 
     def get_signature(self):
         return self.__signature
@@ -418,6 +423,7 @@ if __name__ == "__main__":
     photocards.sort(key = lambda photocard: photocard.get_photocard_name())
     for photocard in photocards:
         print(photocard.get_photocard_name(), photocard.get_stats())
+        # as of now, photocards with piece of shape FiveSquareShape.P have empty stats because the early boosts are unknown for now
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
 # Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
