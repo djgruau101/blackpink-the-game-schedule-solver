@@ -7,7 +7,7 @@ from abc import ABC, abstractmethod
 import re
 import csv
 
-stats_names = ["music", "acting", "fashion", "charm"]
+stats_names = ["Music", "Acting", "Fashion", "Charm"]
 piece_colors = ["Green", "Yellow", "Blue", "Red"]
 suits = ["Summer Trip", "Autumn Trip", "Resting", "Hanok", "Leisurely", 
          "Dreamy", "Bored", "Fairy", "Colorful", "Princess", "Summer Photo Shoot"]
@@ -282,7 +282,7 @@ class Photocard(ABC):
         return [sum(pair) for pair in zip(points, total_boosts)]
 
     def __str__(self):
-        return f"Photocard({self.get_photocard_name()}, {self.get_level()})"
+        return f"Photocard({self.get_photocard_name()}, {self.get_level()}, {self.get_piece()})"
     
     def get_photocard_name(self):
         return self.__photocard_name
@@ -295,6 +295,9 @@ class Photocard(ABC):
 
     def get_piece_shape(self):
         return self.get_piece().get_shape()
+    
+    def get_piece_color(self):
+        return self.get_piece().get_color()
     
     def get_stars(self):
         return self.get_piece().get_number_of_squares()
@@ -315,6 +318,13 @@ class Photocard(ABC):
 
     def get_stats(self):
         return self.__stats
+    
+    def display_photocard_info(self):
+        print("###############")
+        print(self.get_photocard_name())
+        print("|".join([f"{stats_names[stat.value - 1]}: {point}" for stat, point in self.get_stats().items()]))
+        print(f"Piece: {self.get_piece_shape()} {self.get_piece_color()}")
+        print("###############")
 
 
 class Photocard1to4Stars(Photocard):
@@ -376,14 +386,7 @@ if __name__ == "__main__":
                                                   piece_shape, piece_color,
                                                   int(row["Signature"]), int(row["Trendy Up"])))
     for photocard in photocards:
-        print(photocard)
-
-# level up the two Lisa 5 star cards from 15 to 20! Will test it out.  
-
-
-
+        photocard.display_photocard_info()
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
 # Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
-
-#Last level I'm stuck at: need blue Roses
