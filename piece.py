@@ -1,6 +1,5 @@
 from colors import Color
 from shapes import *
-from abc import ABC, abstractmethod
 
 class Piece(object):
 

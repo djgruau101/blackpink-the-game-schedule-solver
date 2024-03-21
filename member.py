@@ -27,3 +27,6 @@ if __name__ == "__main__":
     rosé = Member("ROSÉ", 6, 6, 6, 6, [])
     lisa = Member("LISA", 6, 6, 6, 6, [])
     # jisoo = Member("JISOO", 6, 6, 6, 6, [])
+
+# Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
+# Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
