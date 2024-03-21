@@ -367,9 +367,9 @@ class Photocard5Stars(Photocard):
     # Signature 1: can be done at any level
 
     def __init__(self, name, level, piece_shape, piece_color, signature, trendy_up):
-        if signature not in range(len(self.__signature_boosts)):
+        if signature > self.__MAX_SIGNATURE:
             raise ValueError("Signature value must be from 0 to 5")
-        if trendy_up not in range(len(self.__trendy_up_boosts)):
+        if trendy_up > self.__MAX_TRENDY_UP:
             raise ValueError("Trendy Up value must be from 0 to 3")
         super().__init__(name, level, piece_shape, piece_color)
         self.__signature = signature
@@ -447,19 +447,11 @@ if __name__ == "__main__":
                                                   int(row["Signature"]), int(row["Trendy Up"])))
     photocards.sort(key = lambda photocard: photocard.get_photocard_name())
     print(photocards)
-    c = photocards[[p.get_photocard_name() for p in photocards].index("Morning Walk JISOO #2")]
+    c = photocards[[p.get_photocard_name() for p in photocards].index("JENNIE's Tree Decorating")]
     print(c.get_stats())
-    c.add_signature()
+    c.add_trendy_up()
     print(c.get_stats())
-    ####
-    c.set_signature(0)
-    print(c.get_stats())
-    c.set_signature(2)
-    print(c.get_stats())
-    c.set_signature(1)
-    print(c.get_stats())
-    c.set_signature(0)
-    print(c.get_stats())
+
     # for photocard in photocards:
     #     print(photocard.get_photocard_name(), photocard.get_stats())
         # as of now, photocards with piece of shape FiveSquareShape.P have empty stats because the early boosts are unknown for now
