@@ -143,8 +143,8 @@ shape_by_boosts = {
                                 [8, 23, 44, 73],
                                 [10, 24, 46, 74],
                                 [12, 44, 81, 140]],
-    FiveSquareShape.P: [[],
-                        [],
+    FiveSquareShape.P: [[27, 31, 33, 42],
+                        [27, 33, 35, 43],
                         [29, 35, 36, 43],
                         [30, 36, 36, 46],
                         [31, 37, 38, 48],
@@ -331,7 +331,6 @@ class Photocard(ABC):
 
 
 class Photocard1to4Stars(Photocard):
-
     def __init__(self, name, level):
 
         # Get name of the Blackpink member
@@ -446,17 +445,18 @@ if __name__ == "__main__":
                                                   piece_shape, piece_color,
                                                   int(row["Signature"]), int(row["Trendy Up"])))
     photocards.sort(key = lambda photocard: photocard.get_photocard_name())
-    print(photocards)
-    c = photocards[[p.get_photocard_name() for p in photocards].index("JENNIE's Tree Decorating")]
-    print(c.get_stats())
-    c.add_trendy_up()
-    print(c.get_stats())
+    # print(photocards)
+    # c = photocards[[p.get_photocard_name() for p in photocards].index("JENNIE's Tree Decorating")]
+    # print(c.get_stats())
+    # c.add_trendy_up()
+    # print(c.get_stats())
 
-    # for photocard in photocards:
-    #     print(photocard.get_photocard_name(), photocard.get_stats())
+    for photocard in photocards:
+        print(photocard.get_photocard_name(), photocard.get_stats())
         # as of now, photocards with piece of shape FiveSquareShape.P have empty stats because the early boosts are unknown for now
 
 # Test trendy up Dawn Walk JENNIE #2, JENNIE's Tree Decorating
+# Test add Candle JISOO #2
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
 # Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
