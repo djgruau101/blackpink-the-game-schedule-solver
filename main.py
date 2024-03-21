@@ -24,7 +24,3 @@ for row in data:
 
 # Test trendy up Dawn Walk JENNIE #2, JENNIE's Tree Decorating
 # Test add Candle JISOO #2
-
-# Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749
-# Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69
-    
