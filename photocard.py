@@ -8,8 +8,9 @@ import re
 
 stats_names = ["Music", "Acting", "Fashion", "Charm"]
 piece_colors = ["Green", "Yellow", "Blue", "Red"]
-suits = ["Summer Trip", "Autumn Trip", "Resting", "Hanok", "Leisurely", 
-         "Dreamy", "Bored", "Fairy", "Colorful", "Princess", "Summer Photo Shoot"]
+suits = ["Summer Trip", "Autumn Trip", "Resting",
+         "Hanok", "Leisurely", "Dreamy", "Bored",
+         "Fairy", "Colorful", "Princess", "Summer Photo Shoot"]  # every 1-4 star photocard's name starts with either of these strings
 shapes_1_to_4_stars = [Square.SQUARE, Domino.DOMINO] + list(ThreeSquareShape) + list(FourSquareShape)
 
 member_names = ["JISOO", "JENNIE", "ROSÉ", "LISA"]
@@ -322,11 +323,10 @@ class Photocard(ABC):
         return self.__stats
     
     def display_photocard_info(self):
-        print("###############")
-        print(self.get_photocard_name())
+        print(self.get_photocard_name(), self.get_stars()*"☆")
+        print(f"LV. {self.get_level()}")
         print("|".join([f"{stats_names[stat.value - 1]}: {point}" for stat, point in self.get_stats().items()]))
         print(f"Piece: {self.get_piece_shape()} {self.get_piece_color()}")
-        print("###############")
 
 
 class Photocard1to4Stars(Photocard):
@@ -421,3 +421,8 @@ class Photocard5Stars(Photocard):
     
     def is_max_trendy_up(self):
         return self.get_trendy_up() == self.__MAX_TRENDY_UP
+    
+    def display_photocard_info(self):
+        super().display_photocard_info()
+        print(f"Signature: {self.get_signature()}")
+        print(f"Trendy Up: {self.get_trendy_up()}")
