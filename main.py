@@ -20,8 +20,10 @@ def update_csv(photocards_data, csv_file):
 # Read photocards
 photocards = []
 photocards_dicts = []
-with open(CSV_FILE, "r", newline="", encoding="utf-8-sig") as photocards_data:
+with open(CSV_FILE, "r", newline="", encoding='iso-8859-1') as photocards_data:
     reader = csv.DictReader(photocards_data)
+    print("So far so good!")
+    print(reader)
     data = list(reader)
 for row in data:
     row = {k: v for k, v in row.items() if v is not None and v != ''}  # remove entries that have no value
@@ -85,10 +87,12 @@ while True:
                     name = input("Enter name of the photocard you want to view, or enter 'e' to exit: ")
                     if name == 'e':
                         break
+                    print()
                     if name not in photocards_name_by_object.keys():
                         print(f"No photocard of name {name}\n")
                         continue
                     photocards_name_by_object[name].display_photocard_info()
+                    print()
             if photocard_option == "m":
                 break
     
