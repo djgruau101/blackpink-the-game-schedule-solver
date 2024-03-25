@@ -22,8 +22,6 @@ photocards = []
 photocards_dicts = []
 with open(CSV_FILE, "r", newline="", encoding='iso-8859-1') as photocards_data:
     reader = csv.DictReader(photocards_data)
-    print("So far so good!")
-    print(reader)
     data = list(reader)
 for row in data:
     row = {k: v for k, v in row.items() if v is not None and v != ''}  # remove entries that have no value
