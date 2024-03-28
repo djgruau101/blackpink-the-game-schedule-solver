@@ -409,11 +409,13 @@ class Photocard5Stars(Photocard):
     def add_signature(self):
         if self.is_max_signature():
             print("Signature is at its maximum level, which is 5")
+            return
         self.set_signature(self.get_signature() + 1)
     
     def add_trendy_up(self):
         if self.is_max_trendy_up():
             print("Trendy Up is at its maximum level, which is 3")
+            return
         self.set_trendy_up(self.get_trendy_up() + 1)
     
     def is_max_signature(self):
@@ -426,3 +428,4 @@ class Photocard5Stars(Photocard):
         super().display_photocard_info()
         print(f"Signature: {self.get_signature()}")
         print(f"Trendy Up: {self.get_trendy_up()}")
+        
