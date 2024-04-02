@@ -81,6 +81,20 @@ while True:
                 update_csv(photocards_dicts, CSV_FILE)
                 print("Photocard added.\n")
             if photocard_option == "v":
+                if len(photocards_name_by_object) == 0:
+                    print("There are no photocards")
+                    print()
+                while len(photocards_name_by_object) > 0:
+                    name = input("Enter name of the photocard you want to remove, or enter 'e' to exit: ")
+                    if name == 'e':
+                        break
+                    print()
+                    if name not in photocards_name_by_object.keys():
+                        print(f"No photocard of name {name}\n")
+                        continue
+                    photocards_name_by_object.pop(name)
+                    print()
+            if photocard_option == "r":
                 while True:
                     name = input("Enter name of the photocard you want to view, or enter 'e' to exit: ")
                     if name == 'e':
