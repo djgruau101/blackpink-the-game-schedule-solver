@@ -18,8 +18,8 @@ def update_csv(photocards_data, csv_file):
 
 
 # Read photocards
-photocards = []
 photocards_dicts = []
+photocards_name_by_object = {}
 with open(CSV_FILE, "r", newline="", encoding='iso-8859-1') as photocards_data:
     reader = csv.DictReader(photocards_data)
     data = list(reader)
@@ -28,21 +28,20 @@ for row in data:
     if int(row["Level"]) > 0:
         photocards_dicts.append(row)
         if any([row["Name"].startswith(suit) for suit in suits]):
-            photocards.append(Photocard1to4Stars(row["Name"], int(row["Level"])))
+            photocards_name_by_object[row["Name"]] = Photocard1to4Stars(row["Name"], int(row["Level"]))
         else:
             piece_shape = FiveSquareShape(five_square_shapes_strings.index(row["Piece Shape"]) + 1)
             piece_color = Color(piece_colors.index(row["Piece Color"]) + 1)
             
-            photocards.append(Photocard5Stars(row["Name"], int(row["Level"]),
-                                                piece_shape, piece_color,
-                                                int(row["Signature"]), int(row["Trendy Up"])))
-assert len(photocards) == len(photocards_dicts)
-photocards_name_by_object = dict(zip([p.get_photocard_name() for p in photocards], photocards))
+            photocards_name_by_object[row["Name"]] = Photocard5Stars(row["Name"], int(row["Level"]),
+                                                    piece_shape, piece_color,
+                                                    int(row["Signature"]), int(row["Trendy Up"]))
 
 # Main menu
 print("Welcome to Blackpink: The Game Schedule Solver!\n")
 while True:
     print("MAIN MENU")
+    print(f"You have {len(photocards_name_by_object)} photocards.")
     print("Select option:\n")
     print("Manage photocards (p)\nSolve schedules (s)\nExit (e)")
     option = input()
@@ -80,7 +79,7 @@ while True:
                 photocards_dicts.append(photocard_dict)
                 update_csv(photocards_dicts, CSV_FILE)
                 print("Photocard added.\n")
-            if photocard_option == "v":
+            if photocard_option == "r":
                 if len(photocards_name_by_object) == 0:
                     print("There are no photocards")
                     print()
@@ -94,7 +93,7 @@ while True:
                         continue
                     photocards_name_by_object.pop(name)
                     print()
-            if photocard_option == "r":
+            if photocard_option == "v":
                 while True:
                     name = input("Enter name of the photocard you want to view, or enter 'e' to exit: ")
                     if name == 'e':
