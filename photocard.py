@@ -224,42 +224,24 @@ class Stat(Enum):
 class Photocard(ABC):
 
     def __init__(self, name, level, piece_shape, piece_color):
-        self.__member_name = self.check_member_name(name) # Get name of the Blackpink member
+        self.__member_name = self.check_member_names(name) # Get name of the Blackpink member
         self.__photocard_name = name
         self.__piece = Piece(piece_shape, piece_color)
-        points = self.rearranged_points_list(shape_by_base_stats[piece_shape].copy(), piece_color.value)
-        boosts = [self.rearranged_points_list(lst, piece_color.value) for lst in shape_by_boosts[piece_shape].copy()]
+        self.__base_points = self.rearranged_points_list(shape_by_base_stats[piece_shape].copy(), piece_color.value)
+        self.__boosts = [self.rearranged_points_list(lst, piece_color.value) for lst in shape_by_boosts[piece_shape].copy()]
         if level > self.get_max_level():
             raise ValueError(f"This photocard cannot exceed level {self.get_max_level()}")
-        self.__level = level      
-        # 1-2 stars: boost from max_level-1 to max_level is different than for all other levels
-        if self.get_stars() <= 2:
-            # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
-            number_of_boosts = min(level - 1, self.get_max_level() - 2)
-            points = self.updated_score(points, boosts[0], number_of_boosts)
-            if level == self.get_max_level():
-                points = self.updated_score(points, boosts[1])
-        else:
-            # boosts change at every 10 levels
-            last_boost_index = (self.__level - 1) // 10
-            if self.is_max_level():
-                last_boost_index += 1
-            remaining_level_increase = self.__level - 1  # we add to the level 1 stats which are already defined above
-            for i in range(last_boost_index + 1):
-                max_level_increase_for_current_boost = 9 if i in [0, len(boosts) - 2] else (1 if i == len(boosts) - 1 else 10)
-                level_increase_for_current_boost = min(remaining_level_increase, max_level_increase_for_current_boost)
-                points = self.updated_score(points, boosts[i], level_increase_for_current_boost)
-                remaining_level_increase -= level_increase_for_current_boost
-        self.__stats = dict(zip(Stat, points))
+        self.__level = level
+        self.__stats = self.calculate_stats(level)
 
     @staticmethod
-    def check_member_name(name):
+    def check_member_names(name):
         """Checks if the name of the photocard is valid.
         It is valid only if it contains the name of exactly one Blackpink member.
         Returns the name of the Blackpink member if valid, raise ValueError otherwise."""
 
         # test if exactly one member name is in the photocard name
-        member_name_set = set([word.strip("'s") for word in name.split(" ")]).intersection(member_names) 
+        member_name_set = set([word.strip("'s") for word in name.split(" ")]).intersection(member_names)
         if len(member_name_set) != 1:
             raise ValueError("Name of the photocard must contain the name of exactly one Blackpink member")
         return member_name_set.pop()
@@ -280,6 +262,30 @@ class Photocard(ABC):
         is added by the boost times the level_increase."""
         total_boosts = [boost*level_increase for boost in boosts]
         return [sum(pair) for pair in zip(points, total_boosts)]
+    
+    def calculate_stats(self, level):
+        """Takes the level of a photocard, calculates the score for each stat
+        and returns a dictionary consisting of (stat: score) pairs."""
+        # 1-2 stars: boost from max_level-1 to max_level is different than for all other levels
+        points = self.__base_points.copy()
+        if self.get_stars() <= 2:
+            # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
+            number_of_boosts = min(level - 1, self.get_max_level() - 2)
+            points = self.updated_score(points, self.__boosts[0], number_of_boosts)
+            if level == self.get_max_level():
+                points = self.updated_score(points, self.__boosts[1])
+        else:
+            # boosts change at every 10 levels
+            last_boost_index = (self.__level - 1) // 10
+            if self.is_max_level():
+                last_boost_index += 1
+            remaining_level_increase = self.__level - 1  # we add to the level 1 stats which are already defined above
+            for i in range(last_boost_index + 1):
+                max_level_increase_for_current_boost = 9 if i in [0, len(self.__boosts) - 2] else (1 if i == len(self.__boosts) - 1 else 10)
+                level_increase_for_current_boost = min(remaining_level_increase, max_level_increase_for_current_boost)
+                points = self.updated_score(points, self.__boosts[i], level_increase_for_current_boost)
+                remaining_level_increase -= level_increase_for_current_boost
+        return dict(zip(Stat, points))
     
     def __repr__(self):
         return f"Photocard(name={self.get_photocard_name()}, level={self.get_level()}, Piece={self.get_piece()})"
@@ -315,12 +321,13 @@ class Photocard(ABC):
         if level not in range(1, self.get_max_level()+1):
             raise ValueError(f"The level of this card must range from 1 to {self.get_max_level()}")
         self.__level = level
+        self.__stats = self.calculate_stats(level)  # not the most optimal way to change points
 
     def is_max_level(self):
         return self.get_level() == self.get_max_level()
 
     def get_stats(self):
-        return self.__stats
+        return self.__stats.copy()
     
     def display_photocard_info(self):
         print(self.get_photocard_name(), self.get_stars()*"☆")
@@ -333,7 +340,7 @@ class Photocard1to4Stars(Photocard):
     def __init__(self, name, level):
 
         # Get name of the Blackpink member
-        self.__member_name = self.check_member_name(name)
+        self.__member_name = self.check_member_names(name)
 
         # Initialize member name, photocard name, level and piece
         suit, color_number = [values.strip() for values in name.split(self.__member_name)]
@@ -381,8 +388,11 @@ class Photocard5Stars(Photocard):
         return super().__str__() + f", signature={self.get_signature()}, trendy_up={self.get_trendy_up()})"
 
     def __boost_stats(self, points):
-        for stat, score in super().get_stats().items():
-            super().get_stats()[stat] = score + points
+        """Takes a number of points and increases each stat by that number of points."""
+        new_stats = super().get_stats()
+        for stat, score in new_stats.items():
+            new_stats[stat] = score + points
+        self.__stats = new_stats.copy()
 
     def get_signature(self):
         return self.__signature
