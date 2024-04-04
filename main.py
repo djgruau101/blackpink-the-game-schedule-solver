@@ -8,7 +8,7 @@ def update_csv(photocards_data, csv_file):
     
     fieldnames = ["Name", "Level", "Signature", "Trendy Up", "Piece Shape", "Piece Color"]
 
-    with open(csv_file, mode='w', newline='') as file:
+    with open(csv_file, mode='w', newline='', encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -20,7 +20,7 @@ def update_csv(photocards_data, csv_file):
 # Read photocards
 photocards_dicts = []
 photocards_name_by_object = {}
-with open(CSV_FILE, "r", newline="", encoding="utf-8") as photocards_data:
+with open(CSV_FILE, "r", newline="", encoding="latin-1") as photocards_data:
     reader = csv.DictReader(photocards_data)
     data = list(reader)
 for row in data:
@@ -150,7 +150,12 @@ while True:
                             photocard.level_up()
                         if manage_photocard_option == "ml":
                             photocard.set_to_max_level()
-                        
+                        # Update database
+                        for d in photocards_dicts:
+                            if d["Name"] == photocard.get_photocard_name():
+                                d["Level"] = str(photocard.get_level())
+                                break
+                        update_csv(photocards_dicts, CSV_FILE)
 
 
             if photocard_option == "mm":
