@@ -224,7 +224,7 @@ class Stat(Enum):
 class Photocard(ABC):
 
     def __init__(self, name, level, piece_shape, piece_color):
-        self.__member_name = self.check_member_names(name) # Get name of the Blackpink member
+        self.__member_name = self.check_member_name(name) # Get name of the Blackpink member
         self.__photocard_name = name
         self.__piece = Piece(piece_shape, piece_color)
         self.__base_points = self.rearranged_points_list(shape_by_base_stats[piece_shape].copy(), piece_color.value)
@@ -235,7 +235,7 @@ class Photocard(ABC):
         self.__stats = self.calculate_stats(level)
 
     @staticmethod
-    def check_member_names(name):
+    def check_member_name(name):
         """Checks if the name of the photocard is valid.
         It is valid only if it contains the name of exactly one Blackpink member.
         Returns the name of the Blackpink member if valid, raise ValueError otherwise."""
@@ -323,6 +323,15 @@ class Photocard(ABC):
         self.__level = level
         self.__stats = self.calculate_stats(level)  # not the most optimal way to change points
 
+    def level_up(self):
+        if not self.is_max_level():
+            self.__level += 1
+            self.__stats = self.calculate_stats(self.get_level())  # not the most optimal way to change points
+
+    def set_to_max_level(self):
+        self.__level = self.get_max_level()
+        self.__stats = self.calculate_stats(self.get_level())  # not the most optimal way to change points
+
     def is_max_level(self):
         return self.get_level() == self.get_max_level()
 
@@ -340,7 +349,7 @@ class Photocard1to4Stars(Photocard):
     def __init__(self, name, level):
 
         # Get name of the Blackpink member
-        self.__member_name = self.check_member_names(name)
+        self.__member_name = self.check_member_name(name)
 
         # Initialize member name, photocard name, level and piece
         suit, color_number = [values.strip() for values in name.split(self.__member_name)]

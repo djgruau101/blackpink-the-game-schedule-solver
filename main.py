@@ -112,25 +112,33 @@ while True:
                         print(f"No photocard of name {name}\n")
                         continue
                     while True:
+                        photocard_options = ["sl", "c"]
                         photocard = photocards_name_by_object[name]
                         photocard.display_photocard_info()
                         print()
                         print("Set photocard level (sl)")
                         if not photocard.is_max_level():
+                            photocard_options += ["l", "ml"]
                             print("Level up photocard (l)")
                             print("Set photocard to max level (ml)")
                         if isinstance(photocard, Photocard5Stars):
+                            photocard_options += ["ss", "st"]
                             print("Set signature (ss)")
                             if not photocard.is_max_signature():
+                                photocard_options += ["as", "ms"]
                                 print("Add signature (as)")
                                 print("Set signature to max (ms)")
                             print("Set Trendy Up (st)")
                             if not photocard.is_max_trendy_up():
+                                photocard_options += ["at", "mt"]
                                 print("Add Trendy Up (at)")
                                 print("Set Trendy Up to max (mt)")
                         print("Change photocard/exit (c)")
                         manage_photocard_option = input()
                         print()
+                        if manage_photocard_option not in photocard_options:
+                            print(f"'{manage_photocard_option}' is not an option\n")
+                            continue
                         if manage_photocard_option == "c":
                             break
                         if manage_photocard_option == "sl":
@@ -138,6 +146,11 @@ while True:
                             if level not in [str(l) for l in range(1, photocard.get_max_level())]:
                                 print(f"{photocard.get_photocard_name()} can only range from level 1 to {photocard.get_max_level()}")
                             photocard.set_level(int(level))
+                        if manage_photocard_option == "l":
+                            photocard.level_up()
+                        if manage_photocard_option == "ml":
+                            photocard.set_to_max_level()
+                        
 
 
             if photocard_option == "mm":
