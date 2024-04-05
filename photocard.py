@@ -8,8 +8,8 @@ import re
 
 stats_names = ["Music", "Acting", "Fashion", "Charm"]
 piece_colors = ["Green", "Yellow", "Blue", "Red"]
-suits = ["Summer Trip", "Autumn Trip", "Resting",
-         "Hanok", "Leisurely", "Dreamy", "Bored",
+suits = ["Summer Trip", "Autumn Trip", "Hanok",
+         "Resting", "Leisurely", "Dreamy", "Bored",
          "Fairy", "Colorful", "Princess", "Summer Photo Shoot"]  # every 1-4 star photocard's name starts with either of these strings
 shapes_1_to_4_stars = [Square.SQUARE, Domino.DOMINO] + list(ThreeSquareShape) + list(FourSquareShape)
 

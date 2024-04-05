@@ -51,16 +51,17 @@ while True:
     print(f"You have {len(photocards_name_by_object)} photocards.")
     print("Select option:\n")
     print("Manage photocards (p)\nSolve schedules (s)\nExit (e)")
-    option = input()
+    option = input().lower()
     print()
     if option == 'p':
         while True:
             print("PHOTOCARD MANAGEMENT MENU")
             print("Add photocard (a)\nRemove photocard (r)\nManage existing photocard (view stats, change level, trend up, signature) (m)\nReturn to main menu (mm)")
-            photocard_option = input()
+            photocard_option = input().lower()
             print()
             if photocard_option == "a":
                 name = input("Enter photocard name: ")
+                print()
                 if name in photocards_name_by_object.keys():
                     print(f"Photocard of name '{name}' already exists!\n")
                     photocards_name_by_object[name].display_photocard_info()
@@ -71,15 +72,19 @@ while True:
                 if any([name.startswith(s) for s in suits]):
                     new_photocard = Photocard1to4Stars(name, level)
                 else:
-                    piece_shape_string = input(f"Enter piece shape (either of {', '.join(five_square_shapes_strings)}): ")
+                    piece_shape_string = input(f"Enter piece shape (either of {', '.join(five_square_shapes_strings)}): ").upper()
                     piece_shape = FiveSquareShape(five_square_shapes_strings.index(piece_shape_string) + 1)
                     piece_color_string = input(f"Enter piece color (either of {', '.join(piece_colors)}): ").strip().capitalize()
                     if piece_color_string not in piece_colors:
                         raise ValueError("The piece color should either be green, yellow, blue or red")
                     piece_color = Color(piece_colors.index(piece_color_string) + 1)
-                    signature = int(input("Enter Signature number (from 0 to 5): "))
-                    trendy_up = int(input("Enter Trendy Up number (from 0 to 3): "))
-                    new_photocard = Photocard5Stars(name, level, piece_shape, piece_color, signature, trendy_up)
+                    signature = input("Enter Signature number (from 0 to 5): ")
+                    if signature not in [str(n) for n in range(6)]:
+                        raise ValueError("Signature value must be from 0 to 5")
+                    trendy_up = input("Enter Trendy Up number (from 0 to 3): ")
+                    if trendy_up not in [str(n) for n in range(4)]:
+                        raise ValueError("Trendy Up value must be from 0 to 3")
+                    new_photocard = Photocard5Stars(name, level, piece_shape, piece_color, int(signature), int(trendy_up))
                     photocard_dict["Signature"] = signature
                     photocard_dict["Trendy Up"] = trendy_up
                     photocard_dict["Piece Shape"] = piece_shape_string
@@ -143,7 +148,7 @@ while True:
                                 print("Add Trendy Up (at)")
                                 print("Set Trendy Up to max (mt)")
                         print("Change photocard/exit (c)")
-                        manage_photocard_option = input()
+                        manage_photocard_option = input().lower()
                         print()
                         if manage_photocard_option not in photocard_options:
                             print(f"'{manage_photocard_option}' is not an option\n")
