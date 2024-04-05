@@ -63,6 +63,8 @@ while True:
                 name = input("Enter photocard name: ")
                 if name in photocards_name_by_object.keys():
                     print(f"Photocard of name '{name}' already exists!\n")
+                    photocards_name_by_object[name].display_photocard_info()
+                    print()
                     continue
                 level = int(input("Enter photocard level: "))
                 photocard_dict = {"Name": name, "Level": level}
