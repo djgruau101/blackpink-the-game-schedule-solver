@@ -232,7 +232,7 @@ class Photocard(ABC):
         if level > self.get_max_level():
             raise ValueError(f"This photocard cannot exceed level {self.get_max_level()}")
         self.__level = level
-        self.__stats = self.calculate_stats(level)
+        self._stats = self.calculate_stats(level)
 
     @staticmethod
     def check_member_name(name):
@@ -321,22 +321,22 @@ class Photocard(ABC):
         if level not in range(1, self.get_max_level()+1):
             raise ValueError(f"The level of this card must range from 1 to {self.get_max_level()}")
         self.__level = level
-        self.__stats = self.calculate_stats(level)  # not the most optimal way to change points
+        self._stats = self.calculate_stats(level)  # not the most optimal way to change points
 
     def level_up(self):
         if not self.is_max_level():
             self.__level += 1
-            self.__stats = self.calculate_stats(self.get_level())  # not the most optimal way to change points
+            self._stats = self.calculate_stats(self.get_level())  # not the most optimal way to change points
 
     def set_to_max_level(self):
         self.__level = self.get_max_level()
-        self.__stats = self.calculate_stats(self.get_level())  # not the most optimal way to change points
+        self._stats = self.calculate_stats(self.get_level())  # not the most optimal way to change points
 
     def is_max_level(self):
         return self.get_level() == self.get_max_level()
 
     def get_stats(self):
-        return self.__stats.copy()
+        return self._stats.copy()
     
     def display_photocard_info(self):
         print(self.get_photocard_name(), self.get_stars()*"☆")
@@ -398,10 +398,24 @@ class Photocard5Stars(Photocard):
 
     def __boost_stats(self, points):
         """Takes a number of points and increases each stat by that number of points."""
-        new_stats = super().get_stats()
-        for stat, score in new_stats.items():
-            new_stats[stat] = score + points
-        self.__stats = new_stats.copy()
+        for stat in self._stats:
+            self._stats[stat] += points
+
+    def set_level(self, level):
+        # This works but there can be a better implementation if level changes can be done without having to recalculate from level 1
+        super().set_level(level)
+        self.__boost_stats(self.__signature_boosts[self.get_signature()] +
+                           self.__trendy_up_boosts[self.get_trendy_up()])
+        
+    def level_up(self):
+        super().level_up()
+        self.__boost_stats(self.__signature_boosts[self.get_signature()] +
+                           self.__trendy_up_boosts[self.get_trendy_up()])
+        
+    def set_to_max_level(self):
+        super().set_to_max_level()
+        self.__boost_stats(self.__signature_boosts[self.get_signature()] +
+                           self.__trendy_up_boosts[self.get_trendy_up()])
 
     def get_signature(self):
         return self.__signature
@@ -436,9 +450,15 @@ class Photocard5Stars(Photocard):
             print("Trendy Up is at its maximum level, which is 3")
             return
         self.set_trendy_up(self.get_trendy_up() + 1)
+
+    def set_to_max_signature(self):
+        self.set_signature(self.__MAX_SIGNATURE)
     
     def is_max_signature(self):
         return self.get_signature() == self.__MAX_SIGNATURE
+    
+    def set_to_max_trendy_up(self):
+        self.set_trendy_up(self.__MAX_TRENDY_UP)
     
     def is_max_trendy_up(self):
         return self.get_trendy_up() == self.__MAX_TRENDY_UP

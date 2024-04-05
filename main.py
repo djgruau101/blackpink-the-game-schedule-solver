@@ -85,7 +85,7 @@ while True:
                 photocards_name_by_object[name] = new_photocard
                 photocards_dicts.append(photocard_dict)
                 update_csv(photocards_dicts, CSV_FILE)
-                print("Photocard added.\n")
+                print("Photocard added\n")
             if photocard_option == "r":
                 if len(photocards_name_by_object) == 0:
                     print("There are no photocards")
@@ -98,8 +98,9 @@ while True:
                     if name not in photocards_name_by_object.keys():
                         print(f"No photocard of name {name}\n")
                         continue
-                    photocards_name_by_object.pop(name)
-                    print()
+                    photocards_dicts = list(filter(lambda d: d["Name"] != name, photocards_dicts))
+                    update_csv(photocards_dicts, CSV_FILE)
+                    print("Photocard removed\n")
             if photocard_option == "m":
                 manage_photocard_option = ""
                 while manage_photocard_option != "mm":
@@ -113,6 +114,9 @@ while True:
                         continue
                     while True:
                         photocard_options = ["sl", "c"]
+                        level_changed = False
+                        signature_changed = False
+                        trendy_up_changed = False
                         photocard = photocards_name_by_object[name]
                         photocard.display_photocard_info()
                         print()
@@ -141,20 +145,64 @@ while True:
                             continue
                         if manage_photocard_option == "c":
                             break
-                        if manage_photocard_option == "sl":
+                        elif manage_photocard_option == "sl":
+                            level_changed = True
                             level = input(f"Enter the level that {photocard.get_photocard_name()} will be set to (between 1 and {photocard.get_max_level()}): ")
-                            if level not in [str(l) for l in range(1, photocard.get_max_level())]:
+                            if level not in [str(l) for l in range(1, photocard.get_max_level() + 1)]:
                                 print(f"{photocard.get_photocard_name()} can only range from level 1 to {photocard.get_max_level()}")
+                                continue
                             photocard.set_level(int(level))
-                        if manage_photocard_option == "l":
+                        elif manage_photocard_option == "l":
+                            level_changed = True
                             photocard.level_up()
-                        if manage_photocard_option == "ml":
+                        elif manage_photocard_option == "ml":
+                            level_changed = True
                             photocard.set_to_max_level()
                         # Update database
-                        for d in photocards_dicts:
-                            if d["Name"] == photocard.get_photocard_name():
-                                d["Level"] = str(photocard.get_level())
-                                break
+                        if level_changed:
+                            for d in photocards_dicts:
+                                if d["Name"] == photocard.get_photocard_name():
+                                    d["Level"] = str(photocard.get_level())
+                                    print()
+                                    break
+                        if manage_photocard_option == "ss":
+                            signature_changed = True
+                            signature = input(f"Enter the signature level that {photocard.get_photocard_name()} will be set to (between 0 and 5): ")
+                            if signature not in [str(s) for s in range(6)]:
+                                print("Signature for 5-star photocards can only range from 0 to 5")
+                                continue
+                            photocard.set_signature(int(signature))
+                        elif manage_photocard_option == "as":
+                            signature_changed = True
+                            photocard.add_signature()
+                        elif manage_photocard_option == "ms":
+                            signature_changed = True
+                            photocard.set_to_max_signature()
+                        if signature_changed:
+                            for d in photocards_dicts:
+                                if d["Name"] == photocard.get_photocard_name():
+                                    d["Signature"] = str(photocard.get_signature())
+                                    print()
+                                    break
+                        if manage_photocard_option == "st":
+                            trendy_up_changed = True
+                            trendy_up = input(f"Enter the Trendy Up level that {photocard.get_photocard_name()} will be set to (between 0 and 3): ")
+                            if signature not in [str(s) for s in range(4)]:
+                                print("Trendy Up for 5-star photocards can only range from 0 to 3")
+                                continue
+                            photocard.set_trendy_up(int(trendy_up))
+                        elif manage_photocard_option == "at":
+                            trendy_up_changed = True
+                            photocard.add_trendy_up()
+                        elif manage_photocard_option == "mt":
+                            trendy_up_changed = True
+                            photocard.set_to_max_trendy_up()
+                        if trendy_up_changed:
+                            for d in photocards_dicts:
+                                if d["Name"] == photocard.get_photocard_name():
+                                    d["Trendy Up"] = str(photocard.get_trendy_up())
+                                    print()
+                                    break
                         update_csv(photocards_dicts, CSV_FILE)
 
 
