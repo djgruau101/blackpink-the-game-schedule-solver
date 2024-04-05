@@ -20,7 +20,7 @@ def update_csv(photocards_data, csv_file):
 # Read photocards
 photocards_dicts = []
 photocards_name_by_object = {}
-with open(CSV_FILE, "r", newline="", encoding="latin-1") as photocards_data:
+with open(CSV_FILE, "r", newline="", encoding="utf-8") as photocards_data:
     reader = csv.DictReader(photocards_data)
     data = list(reader)
 for row in data:
@@ -44,6 +44,7 @@ for row in data:
                                                     piece_shape, piece_color,
                                                     int(row["Signature"]), int(row["Trendy Up"]))
 
+print(list(photocards_name_by_object.keys()))
 # Main menu
 print("Welcome to Blackpink: The Game Schedule Solver!\n")
 while True:
@@ -221,8 +222,3 @@ while True:
     
     if option == 'e':
         break
-                
-
-
-# Test trendy up Dawn Walk JENNIE #2, JENNIE's Tree Decorating
-# Test add Candle JISOO #2
