@@ -86,6 +86,8 @@ while True:
                 photocards_dicts.append(photocard_dict)
                 update_csv(photocards_dicts, CSV_FILE)
                 print("Photocard added\n")
+                new_photocard.display_photocard_info()
+                print()
             if photocard_option == "r":
                 if len(photocards_name_by_object) == 0:
                     print("There are no photocards")
@@ -98,6 +100,7 @@ while True:
                     if name not in photocards_name_by_object.keys():
                         print(f"No photocard of name {name}\n")
                         continue
+                    photocards_name_by_object.pop(name)
                     photocards_dicts = list(filter(lambda d: d["Name"] != name, photocards_dicts))
                     update_csv(photocards_dicts, CSV_FILE)
                     print("Photocard removed\n")

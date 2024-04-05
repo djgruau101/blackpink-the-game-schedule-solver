@@ -17,11 +17,11 @@ ROSÉ on the Phone #2,25,0,1,W,Red
 Dawn Walk LISA #2,25,0,1,U,Blue
 Exercising LISA #1,25,0,1,N-MIRROR,Blue
 Neon Sign LISA #1,25,0,1,N-MIRROR,Red
-Dawn Walk JENNIE #2,20,1,0,U,Blue
+Dawn Walk JENNIE #2,20,1,1,U,Blue
 Morning Walk JISOO #2,20,0,1,U,Green
 Writing JISOO #2,20,0,1,W,Red
 Evening Walk JENNIE #1,20,0,1,X,Yellow
-JENNIE's Tree Decorating,20,0,0,X,Blue
+JENNIE's Tree Decorating,20,0,1,X,Blue
 LISA is Filming #1,20,0,1,I,Yellow
 LISA is Filming #2,20,0,0,W,Yellow
 ROSÉ is Looking #2,25,1,0,W,Green
@@ -181,3 +181,5 @@ Evening Walk JENNIE #2,1,0,0,U,Yellow
 Dreamy JISOO #1,10,,,,
 Evening Walk ROSÉ #2,30,0,0,U,Yellow
 LISA's Day Off #1,30,0,0,P-MIRROR,Green
+Dessert with JISOO #1,20,0,0,F-MIRROR,Yellow
+Evening Party JISOO,20,0,0,X,Yellow
