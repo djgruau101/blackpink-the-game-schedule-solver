@@ -44,7 +44,6 @@ for row in data:
                                                     piece_shape, piece_color,
                                                     int(row["Signature"]), int(row["Trendy Up"]))
 
-print(list(photocards_name_by_object.keys()))
 # Main menu
 print("Welcome to Blackpink: The Game Schedule Solver!\n")
 while True:
