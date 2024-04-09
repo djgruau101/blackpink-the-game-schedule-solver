@@ -1,4 +1,5 @@
 from photocard import *
+from member import *
 import csv
 
 CSV_FILE = "photocards.csv"
@@ -16,6 +17,14 @@ def update_csv(photocards_data, csv_file):
         for photocard in photocards_data:
             writer.writerow(photocard)
 
+# Members
+jisoo = Member("JISOO", 16, 16, 16, 16)
+jennie = Member("JENNIE", 16, 16, 16, 16)
+rosé = Member("ROSÉ", 16, 16, 16, 16)
+lisa = Member("LISA", 16, 16, 16, 16)
+
+members = [jisoo, jennie, rosé, lisa]
+member_name_by_object = dict(zip([m.get_name() for m in members], members))
 
 # Read photocards
 photocards_dicts = []
@@ -27,7 +36,7 @@ for row in data:
     row = {k: v for k, v in row.items() if v is not None and v != ''}  # remove entries that have no value
     if int(row["Level"]) > 0:
         photocard_name = row["Name"]
-        if "ROS" in row["Name"]:
+        if "ROS" in row["Name"]:  # assuming that any word that starts with 'ROS' implies 'ROSÉ'
             words = row["Name"].split(" ")
             photocard_name = " ".join(["ROSÉ's" if (word.startswith("ROS") and word.endswith("'s"))
                                         else "ROSÉ" if word.startswith("ROS")
@@ -35,22 +44,25 @@ for row in data:
             row["Name"] = photocard_name
         photocards_dicts.append(row)
         if any([row["Name"].startswith(suit) for suit in suits]):
-            photocards_name_by_object[row["Name"]] = Photocard1to4Stars(row["Name"], int(row["Level"]))
+            photocard = Photocard1to4Stars(row["Name"], int(row["Level"]))
         else:
             piece_shape = FiveSquareShape(five_square_shapes_strings.index(row["Piece Shape"]) + 1)
             piece_color = Color(piece_colors.index(row["Piece Color"]) + 1)
-            
-            photocards_name_by_object[row["Name"]] = Photocard5Stars(row["Name"], int(row["Level"]),
-                                                    piece_shape, piece_color,
-                                                    int(row["Signature"]), int(row["Trendy Up"]))
+            photocard = Photocard5Stars(row["Name"], int(row["Level"]),
+                                        piece_shape, piece_color,
+                                        int(row["Signature"]), int(row["Trendy Up"]))
+        photocards_name_by_object[row["Name"]] = photocard
+        member_name_by_object[photocard.get_member_name()].add_photocard(photocard)
 
 # Main menu
 print("Welcome to Blackpink: The Game Schedule Solver!\n")
 while True:
     print("MAIN MENU")
     print(f"You have {len(photocards_name_by_object)} photocards.")
+    for member in members:
+        print(f"{member.get_number_of_photocards()} {member.get_name()} photocards")
     print("Select option:\n")
-    print("Manage photocards (p)\nSolve schedules (s)\nExit (e)")
+    print("Manage photocards (p)\nManage member (m)\nSolve schedules (s)\nExit (e)")
     option = input().lower()
     print()
     if option == 'p':
@@ -90,6 +102,7 @@ while True:
                     photocard_dict["Piece Shape"] = piece_shape_string
                     photocard_dict["Piece Color"] = piece_color_string
                 photocards_name_by_object[name] = new_photocard
+                member_name_by_object[new_photocard.get_member_name()].add_photocard(new_photocard) 
                 photocards_dicts.append(photocard_dict)
                 update_csv(photocards_dicts, CSV_FILE)
                 print("Photocard added\n")
@@ -107,7 +120,8 @@ while True:
                     if name not in photocards_name_by_object.keys():
                         print(f"No photocard of name {name}\n")
                         continue
-                    photocards_name_by_object.pop(name)
+                    photocard_to_remove = photocards_name_by_object.pop(name)
+                    member_name_by_object[photocard_to_remove.get_member_name()].remove_photocard(photocard_to_remove) 
                     photocards_dicts = list(filter(lambda d: d["Name"] != name, photocards_dicts))
                     update_csv(photocards_dicts, CSV_FILE)
                     print("Photocard removed\n")
@@ -215,9 +229,20 @@ while True:
                                     break
                         update_csv(photocards_dicts, CSV_FILE)
 
-
             if photocard_option == "mm":
                 break
-    
+
+    if option == 'm':
+        while True:
+            for m in members:
+                m.display_member_info()
+                print()
+            print("MEMBER MANAGEMENT MENU")
+            print("Set stat level (s)\nLevel up stat (l)\nReturn to main menu (mm)")
+            member_option = input().lower()
+            print()
+            if member_option == "mm":
+                break
+
     if option == 'e':
         break

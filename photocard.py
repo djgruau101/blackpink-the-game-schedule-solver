@@ -1,12 +1,12 @@
 from piece import Piece
 from shapes import Square, Domino, ThreeSquareShape, FourSquareShape, FiveSquareShape
 from colors import Color
+from globals import *
 
 from enum import Enum
 from abc import ABC, abstractmethod
 import re
 
-stats_names = ["Music", "Acting", "Fashion", "Charm"]
 piece_colors = ["Green", "Yellow", "Blue", "Red"]
 suits = ["Summer Trip", "Autumn Trip", "Hanok",
          "Resting", "Leisurely", "Dreamy", "Bored",
