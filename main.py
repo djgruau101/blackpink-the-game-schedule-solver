@@ -211,7 +211,7 @@ while True:
                         if manage_photocard_option == "st":
                             trendy_up_changed = True
                             trendy_up = input(f"Enter the Trendy Up level that {photocard.get_photocard_name()} will be set to (between 0 and 3): ")
-                            if signature not in [str(s) for s in range(4)]:
+                            if trendy_up not in [str(s) for s in range(4)]:
                                 print("Trendy Up for 5-star photocards can only range from 0 to 3")
                                 continue
                             photocard.set_trendy_up(int(trendy_up))

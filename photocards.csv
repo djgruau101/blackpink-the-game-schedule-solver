@@ -1,8 +1,8 @@
 Name,Level,Signature,Trendy Up,Piece Shape,Piece Color
-Christmas Morning ROSÉ,40,1,3,X,Red
+Christmas Morning ROSÉ,50,1,3,X,Red
 Camping Site JISOO #2,40,0,3,L,Green
 Morning Walk ROSÉ #1,30,0,1,X,Green
-ROSÉ is Filming #2,50,0,1,W,Blue
+ROSÉ is Filming #2,50,0,2,W,Blue
 Reading JISOO #2,25,0,2,P,Blue
 Candle JISOO #1,25,0,2,P-MIRROR,Red
 Ball Game JENNIE #1,40,0,3,N-MIRROR,Yellow
@@ -192,8 +192,8 @@ Store Opening ROSÉ #1,20,0,0,Z,Yellow
 Music Enjoyer LISA #2,20,0,0,W,Red
 Store Front JISOO #2,1,0,0,Z-MIRROR,Green
 JISOO's Works #1,1,0,0,Y-MIRROR,Blue
-JISOO's Closet,1,0,0,T,Red
-Ball Game ROSÉ #2,1,0,0,N,Yellow
+JISOO's Closet,40,0,0,T,Red
+Ball Game ROSÉ #2,35,0,0,N,Yellow
 Guitar Playing ROSÉ #1,1,0,0,P-MIRROR,Red
 Guest Greeting LISA #1,1,0,0,F-MIRROR,Blue
 Pâtissier LISA #2,1,0,0,Z-MIRROR,Red
@@ -216,17 +216,19 @@ Colorful LISA #1,10,,,,
 Summer Photo Shoot LISA #3,10,,,,
 Leisurely LISA #3,10,,,,
 Summer Photo Shoot JISOO #1,1,,,,
-Fairy JISOO #3,1,,,,
-Bored JENNIE #3,1,,,,
-Dreamy JENNIE #3,1,,,,
-Bored ROSÉ #4,1,,,,
-Leisurely ROSÉ #4,1,,,,
-Leisurely LISA #1,1,,,,
-Colorful LISA #4,1,,,,
+Fairy JISOO #3,10,,,,
+Bored JENNIE #3,10,,,,
+Dreamy JENNIE #3,10,,,,
+Bored ROSÉ #4,10,,,,
+Leisurely ROSÉ #4,10,,,,
+Leisurely LISA #1,10,,,,
+Colorful LISA #4,10,,,,
 LISA is Looking #1,1,0,0,I,Green
 Doll ROSÉ,1,0,0,T,Red
 Pajama ROSÉ #2,1,0,0,F,Green
 Break Time JISOO #1,1,0,0,Y-MIRROR,Red
 Movie Watching JENNIE #1,1,0,0,P-MIRROR,Blue
-Bored ROSÉ #1,1,,,,
+Bored ROSÉ #1,10,,,,
 Guest Greeting LISA #2,1,0,0,F,Blue
+Evening Walk LISA #1,1,0,0,X,Yellow
+Designer JISOO #1,1,0,0,Y-MIRROR,Green
