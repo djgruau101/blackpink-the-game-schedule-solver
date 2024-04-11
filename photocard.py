@@ -3,8 +3,7 @@ from shapes import Square, Domino, ThreeSquareShape, FourSquareShape, FiveSquare
 from colors import Color
 from globals import *
 
-from enum import Enum
-from abc import ABC, abstractmethod
+from abc import ABC
 import re
 
 piece_colors = ["Green", "Yellow", "Blue", "Red"]
@@ -172,7 +171,7 @@ shape_by_boosts = {
                         [],
                         [],
                         [],
-                        []], # there are no photocards with this piece shape so far
+                        []], # there are no photocards with a piece of this shape so far
     FiveSquareShape.W: [[12, 39, 40, 42],
                         [13, 40, 42, 43],
                         [15, 42, 43, 43],
@@ -211,15 +210,6 @@ shape_by_boosts = {
                                [12, 44, 81, 140]],
 }
 
-
-class Stat(Enum):
-    MUSIC = 1
-    ACTING = 2
-    FASHION = 3
-    CHARM = 4
-
-
-# One subclass for 1-4 stars, one subclass for 5 stars (since only them have trendy up and signature functionality)
 
 class Photocard(ABC):
 
