@@ -2,7 +2,8 @@ from photocard import *
 from member import *
 import csv
 
-CSV_FILE = "photocards.csv"
+PHOTOCARDS_CSV_FILE = "photocards.csv"
+MEMBERS_CSV_FILE = "members.csv"
 
 def update_csv(photocards_data, csv_file):
     """Input is a list of dictionaries, each dictionary representing a photocard"""
@@ -17,19 +18,22 @@ def update_csv(photocards_data, csv_file):
         for photocard in photocards_data:
             writer.writerow(photocard)
 
-# Members
-jisoo = Member("JISOO", 16, 16, 16, 16)
-jennie = Member("JENNIE", 16, 16, 16, 16)
-rosé = Member("ROSÉ", 16, 16, 16, 16)
-lisa = Member("LISA", 16, 16, 16, 16)
+members = []
 
-members = [jisoo, jennie, rosé, lisa]
+with open(MEMBERS_CSV_FILE, "r", newline="") as members_data:
+    reader = csv.DictReader(members_data)
+    data = list(reader)
+for row in data:
+    if row["Name"].startswith("ROS"):
+        row["Name"] = "ROSÉ"  # avoids encoding problem
+    members.append(Member(row["Name"], int(row["Music"]), int(row["Acting"]), int(row["Fashion"]), int(row["Charm"])))
+
 member_name_by_object = dict(zip([m.get_name() for m in members], members))
 
 # Read photocards
 photocards_dicts = []
 photocards_name_by_object = {}
-with open(CSV_FILE, "r", newline="", encoding="utf-8") as photocards_data:
+with open(PHOTOCARDS_CSV_FILE, "r", newline="", encoding="utf-8") as photocards_data:
     reader = csv.DictReader(photocards_data)
     data = list(reader)
 for row in data:
@@ -104,7 +108,7 @@ while True:
                 photocards_name_by_object[name] = new_photocard
                 member_name_by_object[new_photocard.get_member_name()].add_photocard(new_photocard) 
                 photocards_dicts.append(photocard_dict)
-                update_csv(photocards_dicts, CSV_FILE)
+                update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE)
                 print("Photocard added\n")
                 new_photocard.display_photocard_info()
                 print()
@@ -123,7 +127,7 @@ while True:
                     photocard_to_remove = photocards_name_by_object.pop(name)
                     member_name_by_object[photocard_to_remove.get_member_name()].remove_photocard(photocard_to_remove) 
                     photocards_dicts = list(filter(lambda d: d["Name"] != name, photocards_dicts))
-                    update_csv(photocards_dicts, CSV_FILE)
+                    update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE)
                     print("Photocard removed\n")
             if photocard_option == "m":
                 manage_photocard_option = ""
@@ -227,7 +231,7 @@ while True:
                                     d["Trendy Up"] = str(photocard.get_trendy_up())
                                     print()
                                     break
-                        update_csv(photocards_dicts, CSV_FILE)
+                        update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE)
 
             if photocard_option == "mm":
                 break
