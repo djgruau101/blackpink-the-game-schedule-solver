@@ -4,31 +4,33 @@ import csv
 
 PHOTOCARDS_CSV_FILE = "photocards.csv"
 MEMBERS_CSV_FILE = "members.csv"
+PHOTOCARDS_FIELDNAMES = ["Name", "Level", "Signature", "Trendy Up", "Piece Shape", "Piece Color"]
+MEMBERS_FIELDNAMES = ["Name", "Music", "Acting", "Fashion", "Charm"]
 
-def update_csv(photocards_data, csv_file):
-    """Input is a list of dictionaries, each dictionary representing a photocard"""
-    
-    fieldnames = ["Name", "Level", "Signature", "Trendy Up", "Piece Shape", "Piece Color"]
+def update_csv(data, csv_file, fieldnames):
+    """Input is a list of dictionaries, each dictionary representing either a member or photocard"""
 
     with open(csv_file, mode='w', newline='', encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
 
         # Write the data rows
-        for photocard in photocards_data:
-            writer.writerow(photocard)
+        for item in data:
+            writer.writerow(item)
 
-members = []
 
+members_dicts = []
+members_name_by_object = {}
 with open(MEMBERS_CSV_FILE, "r", newline="") as members_data:
     reader = csv.DictReader(members_data)
     data = list(reader)
 for row in data:
     if row["Name"].startswith("ROS"):
         row["Name"] = "ROSÉ"  # avoids encoding problem
-    members.append(Member(row["Name"], int(row["Music"]), int(row["Acting"]), int(row["Fashion"]), int(row["Charm"])))
+    members_dicts.append(row)
+    new_member = Member(row["Name"], int(row["Music"]), int(row["Acting"]), int(row["Fashion"]), int(row["Charm"]))
+    members_name_by_object[row["Name"]] = new_member
 
-member_name_by_object = dict(zip([m.get_name() for m in members], members))
 
 # Read photocards
 photocards_dicts = []
@@ -56,15 +58,15 @@ for row in data:
                                         piece_shape, piece_color,
                                         int(row["Signature"]), int(row["Trendy Up"]))
         photocards_name_by_object[row["Name"]] = photocard
-        member_name_by_object[photocard.get_member_name()].add_photocard(photocard)
+        members_name_by_object[photocard.get_member_name()].add_photocard(photocard)
 
 # Main menu
 print("Welcome to Blackpink: The Game Schedule Solver!\n")
 while True:
     print("MAIN MENU")
     print(f"You have {len(photocards_name_by_object)} photocards.")
-    for member in members:
-        print(f"{member.get_number_of_photocards()} {member.get_name()} photocards")
+    for member in members_name_by_object:
+        print(f"{members_name_by_object[member].get_number_of_photocards()} {member} photocards")
     print("Select option:\n")
     print("Manage photocards (p)\nManage member (m)\nSolve schedules (s)\nExit (e)")
     option = input().lower()
@@ -106,9 +108,9 @@ while True:
                     photocard_dict["Piece Shape"] = piece_shape_string
                     photocard_dict["Piece Color"] = piece_color_string
                 photocards_name_by_object[name] = new_photocard
-                member_name_by_object[new_photocard.get_member_name()].add_photocard(new_photocard) 
+                members_name_by_object[new_photocard.get_member_name()].add_photocard(new_photocard) 
                 photocards_dicts.append(photocard_dict)
-                update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE)
+                update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE, PHOTOCARDS_FIELDNAMES)
                 print("Photocard added\n")
                 new_photocard.display_photocard_info()
                 print()
@@ -125,9 +127,9 @@ while True:
                         print(f"No photocard of name {name}\n")
                         continue
                     photocard_to_remove = photocards_name_by_object.pop(name)
-                    member_name_by_object[photocard_to_remove.get_member_name()].remove_photocard(photocard_to_remove) 
+                    members_name_by_object[photocard_to_remove.get_member_name()].remove_photocard(photocard_to_remove) 
                     photocards_dicts = list(filter(lambda d: d["Name"] != name, photocards_dicts))
-                    update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE)
+                    update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE, PHOTOCARDS_FIELDNAMES)
                     print("Photocard removed\n")
             if photocard_option == "m":
                 manage_photocard_option = ""
@@ -231,15 +233,15 @@ while True:
                                     d["Trendy Up"] = str(photocard.get_trendy_up())
                                     print()
                                     break
-                        update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE)
+                        update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE, PHOTOCARDS_FIELDNAMES)
 
             if photocard_option == "mm":
                 break
 
     if option == 'm':
         while True:
-            for m in members:
-                m.display_member_info()
+            for member in members_name_by_object:
+                members_name_by_object[member].display_member_info()
                 print()
             print("MEMBER MANAGEMENT MENU")
             print("Set stat level (s)\nLevel up stat (l)\nReturn to main menu (mm)")
