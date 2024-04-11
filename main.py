@@ -1,14 +1,35 @@
 from photocard import *
 from member import *
 import csv
+from enum import Enum
+
+
+class UpdateCSVOption(Enum):
+    PHOTOCARD = 1
+    MEMBER = 2
+
 
 PHOTOCARDS_CSV_FILE = "photocards.csv"
 MEMBERS_CSV_FILE = "members.csv"
-PHOTOCARDS_FIELDNAMES = ["Name", "Level", "Signature", "Trendy Up", "Piece Shape", "Piece Color"]
-MEMBERS_FIELDNAMES = ["Name", "Music", "Acting", "Fashion", "Charm"]
 
-def update_csv(data, csv_file, fieldnames):
-    """Input is a list of dictionaries, each dictionary representing either a member or photocard"""
+members_dicts = []
+photocards_dicts = []
+
+
+def update_csv(option):
+    """'data' is a list of dictionaries, each dictionary representing either a member or photocard"""
+
+    PHOTOCARDS_FIELDNAMES = ["Name", "Level", "Signature", "Trendy Up", "Piece Shape", "Piece Color"]
+    MEMBERS_FIELDNAMES = ["Name", "Music", "Acting", "Fashion", "Charm"]
+
+    if option == UpdateCSVOption.PHOTOCARD:
+        csv_file = PHOTOCARDS_CSV_FILE
+        fieldnames = PHOTOCARDS_FIELDNAMES
+        data = photocards_dicts
+    else:
+        csv_file = MEMBERS_CSV_FILE
+        fieldnames = MEMBERS_FIELDNAMES
+        data = members_dicts
 
     with open(csv_file, mode='w', newline='', encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)
@@ -19,7 +40,6 @@ def update_csv(data, csv_file, fieldnames):
             writer.writerow(item)
 
 
-members_dicts = []
 members_name_by_object = {}
 with open(MEMBERS_CSV_FILE, "r", newline="") as members_data:
     reader = csv.DictReader(members_data)
@@ -33,7 +53,6 @@ for row in data:
 
 
 # Read photocards
-photocards_dicts = []
 photocards_name_by_object = {}
 with open(PHOTOCARDS_CSV_FILE, "r", newline="", encoding="utf-8") as photocards_data:
     reader = csv.DictReader(photocards_data)
@@ -110,7 +129,7 @@ while True:
                 photocards_name_by_object[name] = new_photocard
                 members_name_by_object[new_photocard.get_member_name()].add_photocard(new_photocard) 
                 photocards_dicts.append(photocard_dict)
-                update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE, PHOTOCARDS_FIELDNAMES)
+                update_csv(UpdateCSVOption.PHOTOCARD)
                 print("Photocard added\n")
                 new_photocard.display_photocard_info()
                 print()
@@ -129,7 +148,7 @@ while True:
                     photocard_to_remove = photocards_name_by_object.pop(name)
                     members_name_by_object[photocard_to_remove.get_member_name()].remove_photocard(photocard_to_remove) 
                     photocards_dicts = list(filter(lambda d: d["Name"] != name, photocards_dicts))
-                    update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE, PHOTOCARDS_FIELDNAMES)
+                    update_csv(UpdateCSVOption.PHOTOCARD)
                     print("Photocard removed\n")
             if photocard_option == "m":
                 manage_photocard_option = ""
@@ -233,7 +252,7 @@ while True:
                                     d["Trendy Up"] = str(photocard.get_trendy_up())
                                     print()
                                     break
-                        update_csv(photocards_dicts, PHOTOCARDS_CSV_FILE, PHOTOCARDS_FIELDNAMES)
+                        update_csv(UpdateCSVOption.PHOTOCARD)
 
             if photocard_option == "mm":
                 break
