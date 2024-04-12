@@ -1,7 +1,7 @@
 from piece import Piece
 from shapes import Square, Domino, ThreeSquareShape, FourSquareShape, FiveSquareShape
 from colors import Color
-from globals import *
+from globals import Stat, stats_names, member_names
 
 from abc import ABC
 import re
@@ -12,7 +12,6 @@ suits = ["Summer Trip", "Autumn Trip", "Hanok",
          "Fairy", "Colorful", "Princess", "Summer Photo Shoot"]  # every 1-4 star photocard's name starts with either of these strings
 shapes_1_to_4_stars = [Square.SQUARE, Domino.DOMINO] + list(ThreeSquareShape) + list(FourSquareShape)
 
-member_names = ["JISOO", "JENNIE", "ROSÉ", "LISA"]
 five_square_shapes_strings = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
                               "N", "N-MIRROR", "P", "P-MIRROR",
                               "T", "U", "V", "W", "X",
@@ -336,6 +335,7 @@ class Photocard(ABC):
 
 
 class Photocard1to4Stars(Photocard):
+    """For 1-4 star photocards, the shape of the piece is solely dictated by the name of the photocard."""
     def __init__(self, name, level):
 
         # Get name of the Blackpink member

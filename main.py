@@ -15,6 +15,7 @@ MEMBERS_CSV_FILE = "members.csv"
 members_dicts = []
 photocards_dicts = []
 
+STAT_MAX_LEVEL = 16  # will update it once I know the scores of the higher stat levels
 
 def update_csv(option):
     """'data' is a list of dictionaries, each dictionary representing either a member or photocard"""
@@ -279,11 +280,35 @@ while True:
                 if stat_number not in [str(n) for n in range(1, 5)]:
                     all_valid = False
                     print("The stat number must be from 1 to 4.")
-                if operation.lower() not in ["sl", "l"]:
+                operation = operation.lower()
+                if operation not in ["sl", "l"]:
                     all_valid = False
-                    print("The last option must be either 'sl' or 's'.")
+                    print("The last option must be either 'sl' or 'l'.")
                 if all_valid:
-                    print("All valid!")
+                    member_to_update = members_name_by_object[member_names[int(member_number) - 1]]
+                    stat_to_update = None  # initialize
+                    stat_number = int(stat_number)
+                    for stat in Stat:
+                        if stat.value == stat_number:
+                            stat_to_update = stat
+                            break
+                    if operation == "sl":
+                        level = input(f"Enter the level that {member_to_update.get_name()}'s {stats_names[stat_number - 1]} stat will be set to: ")
+                        if level not in [str(l) for l in range(1, STAT_MAX_LEVEL + 1)]:  # I don't know the scores for higher stat levels yet
+                            print(f"Stats can only range from level 1 to {STAT_MAX_LEVEL}")
+                            continue
+                        member_to_update.set_stat_level(stat_to_update, int(level))
+                    else:
+                        level = member_to_update.get_stats_levels()[stat_to_update] + 1
+                        member_to_update.level_up_stat(stat_to_update)
+                    for d in members_dicts:
+                        if d["Name"] == member_to_update.get_name():
+                            d[stats_names[stat_number - 1]] = str(level)
+                            print()
+                            break
+                    update_csv(UpdateCSVOption.MEMBER)
+            else:
+                print("Please enter 3 prompts separated by a space")
             print()
 
     if option == 'e':

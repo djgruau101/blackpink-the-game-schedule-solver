@@ -1,14 +1,16 @@
-from photocard import Photocard
-from globals import *
+from globals import Stat, member_names, stats_names
 
 class Member(object):
 
-    __member_names = ["JENNIE", "ROSÉ", "LISA", "JISOO"]
     __instances = {}
+    __stats_scores = [100, 150, 201, 254, 309,
+                      366, 425, 485, 548, 613,
+                      680, 749, 820, 894, 970,
+                      1049]  # the score of a stat is at level (its index + 1)
 
     def __init__(self, name, music_level, acting_level,
                 fashion_level, charm_level):
-        if name not in self.__member_names:
+        if name not in member_names:
             raise ValueError("The names of the Blackpink members are JENNIE, ROSÉ, LISA and JISOO")
         self.__name = name
         self.__music = music_level
@@ -19,7 +21,7 @@ class Member(object):
 
     def __new__(cls, name, music_level, acting_level,
                 fashion_level, charm_level):
-        if name not in cls.__member_names:
+        if name not in member_names:
             raise ValueError(f"'{name}' is not a member of Blackpink")
         if name not in cls.__instances:
             cls.__instances[name] = super().__new__(cls)
@@ -36,9 +38,6 @@ class Member(object):
     def get_name(self):
         return self.__name
     
-    def get_stats(self):
-        return dict(zip(Stat, [self.__music, self.__acting, self.__fashion, self.__charm]))
-    
     def get_photocards(self):
         return self.__photocards.copy()
 
@@ -52,11 +51,42 @@ class Member(object):
         return len(self.__photocards)
     
     def get_level(self):
-        return min(self.get_stats().values())
+        return min(self.get_stats_levels().values())
     
+    def set_stat_level(self, stat, level):
+        if level not in range(1, len(self.__stats_scores) + 1):
+            raise ValueError(f"Stat level must range from 1 to {len(self.__stats_scores)}")
+        if stat == Stat.MUSIC:
+            self.__music = level
+        elif stat == Stat.ACTING:
+            self.__acting = level
+        elif stat == Stat.FASHION:
+            self.__fashion = level
+        elif stat == Stat.CHARM:
+            self.__charm = level
+
+    def level_up_stat(self, stat):
+        current_level = 0  # initialize
+        if stat == Stat.MUSIC:
+            current_level = self.__music
+        elif stat == Stat.ACTING:
+            current_level = self.__acting
+        elif stat == Stat.FASHION:
+            current_level = self.__fashion
+        elif stat == Stat.CHARM:
+            current_level = self.__charm
+        return self.set_stat_level(stat, current_level + 1)
+    
+    def get_stats_levels(self):
+        return dict(zip(Stat, [self.__music, self.__acting, self.__fashion, self.__charm]))
+
+    def get_stats_points(self):
+        stats_levels = [self.__music, self.__acting, self.__fashion, self.__charm]
+        return dict(zip(Stat, [self.__stats_scores[l - 1] for l in stats_levels]))
+
     def display_member_info(self):
         print(f"LV.{self.get_level()}", self.get_name())
-        print("|".join([f"{stats_names[stat.value - 1]}: {point}" for stat, point in self.get_stats().items()]))
+        print("|".join([f"{stats_names[stat.value - 1]}: {level}" for stat, level in self.get_stats_levels().items()]))
         print(f"{self.get_number_of_photocards()} photocards")
 
 # Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749, 820, 894, 970, 1049
