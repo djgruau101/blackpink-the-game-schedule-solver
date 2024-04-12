@@ -51,7 +51,6 @@ for row in data:
     new_member = Member(row["Name"], int(row["Music"]), int(row["Acting"]), int(row["Fashion"]), int(row["Charm"]))
     members_name_by_object[row["Name"]] = new_member
 
-
 # Read photocards
 photocards_name_by_object = {}
 with open(PHOTOCARDS_CSV_FILE, "r", newline="", encoding="utf-8") as photocards_data:
@@ -262,12 +261,30 @@ while True:
             for member in members_name_by_object:
                 members_name_by_object[member].display_member_info()
                 print()
-            print("MEMBER MANAGEMENT MENU")
-            print("Set stat level (s)\nLevel up stat (l)\nReturn to main menu (mm)")
-            member_option = input().lower()
-            print()
+            print("MEMBER MANAGEMENT MENU\n")
+            print("For each row, enter your desired selection. Separate each selection by a space.")
+            print(" | ".join([f"{member_name} ({number})" for number, member_name in enumerate(members_name_by_object, start=1)]))
+            print(" | ".join([f"{stat_name} ({number})" for number, stat_name in enumerate(stats_names, start=1)]))
+            print("Set stat level (sl) | Level up stat (l)\nExample: '4 1 l' means LISA Music Level Up\n\nOR Return to main menu (mm)")
+            member_option = input()
             if member_option == "mm":
                 break
+            if len(member_option.split(" ")) == 3:
+                print()
+                all_valid = True
+                member_number, stat_number, operation = member_option.split(" ")
+                if member_number not in [str(n) for n in range(1, 5)]:
+                    all_valid = False
+                    print("The member number must be from 1 to 4.")
+                if stat_number not in [str(n) for n in range(1, 5)]:
+                    all_valid = False
+                    print("The stat number must be from 1 to 4.")
+                if operation.lower() not in ["sl", "l"]:
+                    all_valid = False
+                    print("The last option must be either 'sl' or 's'.")
+                if all_valid:
+                    print("All valid!")
+            print()
 
     if option == 'e':
         break

@@ -20,8 +20,8 @@ five_square_shapes_strings = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
 
 suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
 
-# I don't know the base stats for every shape yet
 # Stats are ordered in increasing order of strength
+# Assume all lucky photocards have [325, 475, 700, 1000]
 shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
     Square.SQUARE: [24, 25, 25, 26],
     Domino.DOMINO: [48, 60, 60, 72],
@@ -44,10 +44,10 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
     FiveSquareShape.P: [300, 360, 375, 465],
     FiveSquareShape.P_MIRROR: [300, 375, 375, 450],
     FiveSquareShape.T: [75, 225, 450, 750],
-    FiveSquareShape.U: [225, 375, 420, 480],  # lucky: 325, 475, 700, 1000
+    FiveSquareShape.U: [225, 375, 420, 480],
     FiveSquareShape.V: [0, 0, 0, 0],  # so far there are no photocards with this piece shape
     FiveSquareShape.W: [150, 435, 450, 465],
-    FiveSquareShape.X: [75, 225, 450, 750],  # lucky: 325, 475, 700, 1000
+    FiveSquareShape.X: [75, 225, 450, 750],
     FiveSquareShape.Y: [75, 225, 450, 750],
     FiveSquareShape.Y_MIRROR: [75, 225, 450, 750],
     FiveSquareShape.Z: [75, 225, 450, 750],
