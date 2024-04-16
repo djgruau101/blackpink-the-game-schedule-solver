@@ -2,12 +2,12 @@ Name,Level,Signature,Trendy Up,Piece Shape,Piece Color
 Christmas Morning ROSÉ,50,1,3,X,Red
 Camping Site JISOO #2,40,0,3,L,Green
 Morning Walk ROSÉ #1,30,0,1,X,Green
-ROSÉ is Filming #2,50,0,2,W,Blue
+ROSÉ is Filming #2,50,0,3,W,Blue
 Reading JISOO #2,25,0,2,P,Blue
 Candle JISOO #1,25,0,2,P-MIRROR,Red
 Ball Game JENNIE #1,40,0,3,N-MIRROR,Yellow
-Coloring Book JENNIE #2,25,0,2,P,Red
-LISA's Outing,25,1,2,T,Green
+Coloring Book JENNIE #2,25,0,3,P,Red
+LISA's Outing,40,2,3,T,Green
 LISA's Chocolate,40,0,3,U,Blue
 Valentine's Day JISOO,25,0,1,U,Green
 Pajama JISOO #1,25,0,1,F-MIRROR,Green
@@ -22,9 +22,9 @@ Morning Walk JISOO #2,20,0,1,U,Green
 Writing JISOO #2,20,0,1,W,Red
 Evening Walk JENNIE #1,20,0,1,X,Yellow
 JENNIE's Tree Decorating,20,0,1,X,Blue
-LISA is Filming #1,20,0,1,I,Yellow
+LISA is Filming #1,50,0,1,I,Yellow
 LISA is Filming #2,20,0,0,W,Yellow
-ROSÉ is Looking #2,25,1,0,W,Green
+ROSÉ is Looking #2,30,1,0,W,Green
 LISA's Closet,20,0,0,T,Blue
 Night Walk LISA #2,20,0,0,U,Red
 Midsummer Night ROSÉ #2,25,0,0,L,Blue
@@ -144,18 +144,18 @@ Hanok JISOO #2,1,,,,
 Hanok JISOO #3,1,,,,
 Hanok JISOO #4,1,,,,
 Autumn Trip JENNIE #1,1,,,,
-Autumn Trip JENNIE #2,1,,,,
+Autumn Trip JENNIE #2,3,,,,
 Autumn Trip JENNIE #3,1,,,,
 Autumn Trip JENNIE #4,1,,,,
 Autumn Trip ROSÉ #1,1,,,,
 Autumn Trip ROSÉ #2,1,,,,
-Autumn Trip ROSÉ #3,1,,,,
+Autumn Trip ROSÉ #3,4,,,,
 Autumn Trip ROSÉ #4,1,,,,
 Autumn Trip LISA #1,1,,,,
 Autumn Trip LISA #2,1,,,,
 Autumn Trip LISA #3,1,,,,
-Autumn Trip LISA #4,1,,,,
-Autumn Trip JISOO #1,1,,,,
+Autumn Trip LISA #4,5,,,,
+Autumn Trip JISOO #1,2,,,,
 Autumn Trip JISOO #2,1,,,,
 Autumn Trip JISOO #3,1,,,,
 Autumn Trip JISOO #4,1,,,,
@@ -232,3 +232,5 @@ Bored ROSÉ #1,10,,,,
 Guest Greeting LISA #2,1,0,0,F,Blue
 Evening Walk LISA #1,1,0,0,X,Yellow
 Designer JISOO #1,1,0,0,Y-MIRROR,Green
+Dawn Walk ROSÉ #2,1,0,0,U,Blue
+Princess JISOO #3,10,,,,

@@ -276,6 +276,10 @@ class Photocard(ABC):
                 remaining_level_increase -= level_increase_for_current_boost
         return dict(zip(Stat, points))
     
+    def base_total_score(self):
+        """Returns the sum of all stats from the photocard"""
+        return sum(self.get_stats().values())
+    
     def __repr__(self):
         return f"Photocard(name={self.get_photocard_name()}, level={self.get_level()}, Piece={self.get_piece()})"
 
