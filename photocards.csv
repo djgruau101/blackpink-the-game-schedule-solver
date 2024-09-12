@@ -39,7 +39,7 @@ Fairy JENNIE #2,10,,,,
 Fairy JENNIE #3,10,,,,
 Fairy JENNIE #4,10,,,,
 Leisurely JENNIE #1,10,,,,
-Leisurely JENNIE #4,10,,,,
+Leisurely JENNIE #4,24,,,,
 Colorful JENNIE #1,10,,,,
 Colorful JENNIE #3,10,,,,
 Colorful JENNIE #4,10,,,,
@@ -128,12 +128,12 @@ Hanok ROSÉ #2,20,,,,
 Hanok ROSÉ #3,21,,,,
 Hanok ROSÉ #4,24,,,,
 Resting LISA #1,25,,,,
-Resting LISA #2,1,,,,
-Resting LISA #3,1,,,,
+Resting LISA #2,27,,,,
+Resting LISA #3,29,,,,
 Resting LISA #4,1,,,,
-Hanok LISA #1,1,,,,
-Hanok LISA #2,1,,,,
-Hanok LISA #3,1,,,,
+Hanok LISA #1,26,,,,
+Hanok LISA #2,28,,,,
+Hanok LISA #3,30,,,,
 Hanok LISA #4,1,,,,
 Resting JISOO #1,2,,,,
 Resting JISOO #2,3,,,,
@@ -227,7 +227,7 @@ LISA is Looking #1,1,0,0,I,Green
 Doll ROSÉ,1,0,0,T,Red
 Pajama ROSÉ #2,1,0,0,F,Green
 Break Time JISOO #1,1,0,0,Y-MIRROR,Red
-Movie Watching JENNIE #1,1,0,0,P-MIRROR,Blue
+Movie Watching JENNIE #1,40,0,0,P-MIRROR,Blue
 Bored ROSÉ #1,10,,,,
 Guest Greeting LISA #2,1,0,0,F,Blue
 Evening Walk LISA #1,1,0,0,X,Yellow
@@ -235,3 +235,7 @@ Designer JISOO #1,1,0,0,Y-MIRROR,Green
 Dawn Walk ROSÉ #2,1,0,0,U,Blue
 Princess JISOO #3,10,,,,
 Morning Walk JISOO #1,1,0,0,X,Green
+Guest Greeting JENNIE #2,1,0,0,F,Blue
+Camping Site JENNIE #1,12,0,0,L-MIRROR,Green
+Pajama JENNIE #2,1,0,0,F,Green
+Camping Site LISA #2,1,0,0,L,Green

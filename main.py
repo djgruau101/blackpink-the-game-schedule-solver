@@ -11,11 +11,10 @@ class UpdateCSVOption(Enum):
 
 PHOTOCARDS_CSV_FILE = "photocards.csv"
 MEMBERS_CSV_FILE = "members.csv"
+STAT_MAX_LEVEL = 25  # will update it once I know the scores of the higher stat levels
 
 members_dicts = []
 photocards_dicts = []
-
-STAT_MAX_LEVEL = 17  # will update it once I know the scores of the higher stat levels
 
 def update_csv(option):
     """'data' is a list of dictionaries, each dictionary representing either a member or photocard"""

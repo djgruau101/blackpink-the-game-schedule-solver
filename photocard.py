@@ -20,7 +20,9 @@ five_square_shapes_strings = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
 suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
 
 # Stats are ordered in increasing order of strength
-# Assume all lucky photocards have [325, 475, 700, 1000]
+# Assume all lucky photocards have [325, 475, 700, 1000] (T, F, Y, X, Z-MIRROR, N-MIRROR)
+# U: [475 625 670 730] if original boosts are maintained
+# So far: lucky -> +250 each
 shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
     Square.SQUARE: [24, 25, 25, 26],
     Domino.DOMINO: [48, 60, 60, 72],
@@ -53,6 +55,11 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
     FiveSquareShape.Z_MIRROR: [75, 225, 450, 750],
 }
 
+# May 2024 update: limit break
+# 1-star: [5,5,5,6] (to level 14), [5,6,6,5] (14 to 18), [5,5,5,7] (18 to 19), [11,12,12,11] (19 to 20)
+# 2-star: [9,12,12,13] (to level 24), [10,12,12,14] (24 to 29), [24,30,30,37] (29 to 30)
+# 3L: [16,16,23,27] (to level 34), [17,17,24,28] (34 to 38)
+# 3I: [12,21,21,28] (to level 34), [13,22,22,29] (34 to 38)
 shape_by_boosts = {
     Square.SQUARE: [[5, 5, 5, 5], [10, 10, 10, 10]],
     Domino.DOMINO: [[9, 11, 11, 13], [22, 27, 27, 32]],
@@ -305,7 +312,7 @@ class Photocard(ABC):
         return self.get_piece().get_number_of_squares()
     
     def get_max_level(self):
-        return self.get_stars() * 10
+        return self.get_stars() * 10  # to be modified from May 2024 update: limit break
     
     def get_level(self):
         return self.__level
