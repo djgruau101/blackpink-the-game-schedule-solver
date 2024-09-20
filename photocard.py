@@ -57,6 +57,10 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
 }
 
 # They changed some of the boosts smh
+# For 3-5 star photocards, boosts normally change when the levels reaches 11, 21, 31, or 41
+# The boost from level 10*number_of_stars - 1 to 10*number_of_stars is unique
+# For exceptional circumstances where the boost changes within a plateau,
+# all boosts will be indicated and they are preceded by the amount of times they are applied.
 shape_by_boosts = {
     Square.SQUARE: [[5, 5, 5, 5], [10, 10, 10, 10]],
     Domino.DOMINO: [[9, 11, 11, 13], [22, 27, 27, 32]],
@@ -71,13 +75,13 @@ shape_by_boosts = {
     FourSquareShape.I: [[10, 20, 30, 40],
                         [10, 21, 32, 41],
                         [10, 21, 33, 44],
-                        [11, 23, 34, 45],
+                        [(4, [11, 23, 34, 45]), (5, [12, 23, 34, 44])], # 34 to 39: +12 for weak, +44 for strong exceptionally
                         [17, 33, 48, 65]],
     FourSquareShape.O: [[22, 25, 25, 28],
                         [23, 26, 26, 29],
                         [24, 27, 27, 30],
                         [25, 28, 28, 32],
-                        [35, 41, 41, 46]],
+                        [35, 41, 41, 46]], # boosts are consistent
     FourSquareShape.T: [[20, 20, 25, 35],
                         [21, 21, 26, 36],
                         [22, 22, 27, 37],
@@ -89,7 +93,7 @@ shape_by_boosts = {
                         [12, 29, 34, 38],
                         [17, 40, 49, 57]],
     FourSquareShape.L: [[15, 20, 25, 40],
-                        [15, 20, 26, 43], # 19 to 20: +16 for weak, +42 for strong exceptionally
+                        [(9, [15, 20, 26, 43]), (1, [16, 20, 26, 42])], # 19 to 20: +16 for weak, +42 for strong exceptionally
                         [16, 22, 27, 43],
                         [17, 23, 29, 44],
                         [25, 33, 40, 65]],
@@ -218,12 +222,13 @@ shape_by_boosts = {
 # 2-star: [9,12,12,13] (to level 24), [10,12,12,14] (24 to 29), [24,30,30,37] (29 to 30)
 # 3L: [16,16,23,27] (to level 34), [17,17,24,28] (34 to 38)
 # 3I: [12,21,21,28] (to level 34), [13,22,22,29] (34 to 38)
+# The boosts filled with 0s are the ones I haven't found yet (gotta farm stardust!)
 shape_by_boosts_limit_break = {
     Square.SQUARE: [[5, 5, 5, 6], [5, 6, 6, 5], [5, 5, 5, 7], [11, 12, 12, 11]],  # ALL GOOD!
-    Domino.DOMINO: [[9, 12, 12, 13], [10, 12, 12, 14], [10, 12, 12, 14], [24, 30, 30, 37]], # ALL GOOD!
-    ThreeSquareShape.I: [[12, 21, 21, 28], [13, 22, 22, 29], [0, 0, 0, 0], [0, 0, 0, 0]], # so far so good
+    Domino.DOMINO: [[9, 12, 12, 13], [10, 12, 12, 14], [10, 12, 12, 14], [24, 30, 30, 37]],
+    ThreeSquareShape.I: [[12, 21, 21, 28], [13, 22, 22, 29], [0, 0, 0, 0], [0, 0, 0, 0]],
     ThreeSquareShape.L: [[16, 16, 23, 27], [17, 17, 24, 28], [0, 0, 0, 0], [0, 0, 0, 0]],
-    FourSquareShape.I: [[12, 24, 36, 46], [13, 25, 38, 48], [13, 25, 38, 49], [19, 37, 57, 74]], # verified
+    FourSquareShape.I: [[12, 24, 36, 46], [13, 25, 38, 48], [13, 25, 38, 49], [19, 37, 57, 74]],
     FourSquareShape.O: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FourSquareShape.T: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FourSquareShape.J: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
@@ -240,7 +245,9 @@ class Photocard(ABC):
         self.__photocard_name = name
         self.__piece = Piece(piece_shape, piece_color)
         self.__base_points = self.rearranged_points_list(shape_by_base_stats[piece_shape].copy(), piece_color.value)
-        self.__boosts = [self.rearranged_points_list(lst, piece_color.value) for lst in shape_by_boosts[piece_shape].copy()]
+        self.__boosts = [self.rearranged_points_list(lst, piece_color.value) if isinstance(lst[0], int)
+                         else [(tup[0], self.rearranged_points_list(tup[1], piece_color.value)) for tup in lst]
+                         for lst in shape_by_boosts[piece_shape].copy()]
         if level > self.get_max_level():
             raise ValueError(f"This photocard cannot exceed level {self.get_max_level()}")
         self.__level = level
@@ -279,24 +286,47 @@ class Photocard(ABC):
         """Takes the level of a photocard, calculates the score for each stat when the photocard is at said level
         and returns a dictionary consisting of (stat: score) pairs."""
          # 1-2 stars: boost from max_level-1 to max_level is different than for all other levels
+        if level > self.get_max_level():
+            raise ValueError(f"level must be between 1 and {self.get_max_level()} inclusively")
         points = self.__base_points.copy()
+        # Limit break boosts for 1 to 4-star photocards
+        if self.get_stars() < 5 and level > 10 * self.get_stars():
+            piece_color_value = self.get_piece().get_color().value
+            piece_shape = self.get_piece().get_shape()
+            limit_break_boosts = [self.rearranged_points_list(lst, piece_color_value) for lst in shape_by_boosts_limit_break[piece_shape].copy()]
+            limit_break_increase = level - 10 * self.get_stars()
+            level = 10 * self.get_stars()
+            for i in range(4):
+                # The first and second one are applied at most 4 times, the last two are applied at most once.
+                upper_bound = 4 if i <= 1 else 1
+                level_increase_for_current_boost = min(limit_break_increase, upper_bound)
+                points = self.updated_score(points, limit_break_boosts[i], level_increase_for_current_boost)
+                limit_break_increase -= level_increase_for_current_boost
         if self.get_stars() <= 2:
             # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
-            number_of_boosts = min(level - 1, self.get_max_level() - 2)
+            number_of_boosts = min(level - 1, 10 * self.get_stars() - 2)
             points = self.updated_score(points, self.__boosts[0], number_of_boosts)
-            if level == self.get_max_level():
+            if level == 10 * self.get_stars():
                 points = self.updated_score(points, self.__boosts[1])
         else:
-            # boosts change at every 10 levels
-            last_boost_index = (self.__level - 1) // 10
-            if self.is_max_level():
+            # Boosts change at every 10 levels
+            last_boost_index = (level - 1) // 10
+            if level == 10 * self.get_stars():
                 last_boost_index += 1
-            remaining_level_increase = self.__level - 1  # we add to the level 1 stats which are already defined above
+            remaining_level_increase = level - 1  # We add to the level 1 stats which are already defined above
             for i in range(last_boost_index + 1):
+                # This implementation works but there could be an easier one!
                 max_level_increase_for_current_boost = 9 if i in [0, len(self.__boosts) - 2] else (1 if i == len(self.__boosts) - 1 else 10)
                 level_increase_for_current_boost = min(remaining_level_increase, max_level_increase_for_current_boost)
-                points = self.updated_score(points, self.__boosts[i], level_increase_for_current_boost)
-                remaining_level_increase -= level_increase_for_current_boost
+                if isinstance(self.__boosts[i][0], tuple):  # The boost changes within the plateau for some stupid reason
+                    for frequency_and_boost in self.__boosts[i]:
+                        (frequency, boost) = frequency_and_boost
+                        actual_frequency = min(frequency, level_increase_for_current_boost)
+                        points = self.updated_score(points, boost, actual_frequency)
+                        remaining_level_increase -= actual_frequency
+                else:
+                    points = self.updated_score(points, self.__boosts[i], level_increase_for_current_boost)
+                    remaining_level_increase -= level_increase_for_current_boost
         return dict(zip(Stat, points))
     
     def base_total_score(self):
@@ -327,8 +357,9 @@ class Photocard(ABC):
     def get_stars(self):
         return self.get_piece().get_number_of_squares()
     
+    @abstractmethod
     def get_max_level(self):
-        return self.get_stars() * 10  # to be modified from May 2024 update: limit break
+        pass
     
     def get_level(self):
         return self.__level
@@ -384,7 +415,11 @@ class Photocard1to4Stars(Photocard):
         
     def __eq__(self, other):
         return isinstance(other, Photocard1to4Stars) and self.get_piece() == other.get_piece() and self.get_member_name() == self.get_member_name()
-    
+
+    def get_max_level(self):
+        """The maximum level of a 1 to 4-star photocard used to be 10 * number of stars.
+        Since the May 2024 update, the maximum level of 1 to 4-star photocards is increased by 10."""
+        return 10 * self.get_stars() + 10
 
 class Photocard5Stars(Photocard):
 
@@ -402,6 +437,8 @@ class Photocard5Stars(Photocard):
             raise ValueError("Signature value must be from 0 to 5")
         if trendy_up > self.__MAX_TRENDY_UP:
             raise ValueError("Trendy Up value must be from 0 to 3")
+        if not isinstance(piece_shape, FiveSquareShape):
+            raise ValueError("piece_shape must be a FiveSquareShape")
         super().__init__(name, level, piece_shape, piece_color)
         self.__signature = signature
         self.__trendy_up = trendy_up
@@ -428,6 +465,9 @@ class Photocard5Stars(Photocard):
         super().level_up()
         self.__boost_stats(self.__signature_boosts[self.get_signature()] +
                            self.__trendy_up_boosts[self.get_trendy_up()])
+        
+    def get_max_level(self):
+        return 10 * self.get_stars()
         
     def set_to_max_level(self):
         super().set_to_max_level()
@@ -484,10 +524,3 @@ class Photocard5Stars(Photocard):
         super().display_photocard_info()
         print(f"Signature: {self.get_signature()}")
         print(f"Trendy Up: {self.get_trendy_up()}")
-
-
-if __name__ == "__main__":
-    one_to_four_star = Photocard1to4Stars("Leisurely LISA #4", 40)
-    one_to_four_star.display_photocard_info()
-    five_star = Photocard5Stars("Guest Greeting JENNIE #1", 24, FiveSquareShape.F_MIRROR, Color.BLUE, 5, 3)
-    five_star.display_photocard_info()
