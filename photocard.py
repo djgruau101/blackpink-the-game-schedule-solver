@@ -249,8 +249,8 @@ class Photocard(ABC):
         self.__boosts = [self.rearranged_points_list(lst, piece_color.value) if isinstance(lst[0], int)
                          else [(tup[0], self.rearranged_points_list(tup[1], piece_color.value)) for tup in lst]
                          for lst in shape_by_boosts[piece_shape].copy()]
-        if level > self.get_max_level():
-            raise ValueError(f"This photocard cannot exceed level {self.get_max_level()}")
+        if level not in range(1, self.get_max_level() + 1):
+            raise ValueError(f"This photocard's level must be between 1 to {self.get_max_level()}")
         self.__level = level
         self._stats = self.calculate_stats(level)
 
@@ -295,8 +295,8 @@ class Photocard(ABC):
             piece_color_value = self.get_piece().get_color().value
             piece_shape = self.get_piece().get_shape()
             limit_break_boosts = [self.rearranged_points_list(lst, piece_color_value) for lst in shape_by_boosts_limit_break[piece_shape].copy()]
-            limit_break_increase = level - 10 * self.get_stars()
-            level = 10 * self.get_stars()
+            limit_break_increase = level - self.__max_level_before_limit_break
+            level = self.__max_level_before_limit_break
             for i in range(4):
                 # The first and second one are applied at most 4 times, the last two are applied at most once.
                 upper_bound = 4 if i <= 1 else 1
@@ -305,14 +305,14 @@ class Photocard(ABC):
                 limit_break_increase -= level_increase_for_current_boost
         if self.get_stars() <= 2:
             # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
-            number_of_boosts = min(level - 1, 10 * self.get_stars() - 2)
+            number_of_boosts = min(level - 1, self.__max_level_before_limit_break - 2)
             points = self.updated_score(points, self.__boosts[0], number_of_boosts)
-            if level == 10 * self.get_stars():
+            if level == self.__max_level_before_limit_break:
                 points = self.updated_score(points, self.__boosts[1])
         else:
             # Boosts change at every 10 levels
             last_boost_index = (level - 1) // 10
-            if level == 10 * self.get_stars():
+            if level == self.__max_level_before_limit_break:
                 last_boost_index += 1
             remaining_level_increase = level - 1  # We add to the level 1 stats which are already defined above
             for i in range(last_boost_index + 1):
@@ -366,7 +366,7 @@ class Photocard(ABC):
         return self.__level
 
     def set_level(self, level):
-        if level not in range(1, self.get_max_level()+1):
+        if level not in range(1, self.get_max_level() + 1):
             raise ValueError(f"The level of this card must range from 1 to {self.get_max_level()}")
         self.__level = level
         self._stats = self.calculate_stats(level)  # not the most optimal way to change points
@@ -428,6 +428,7 @@ class Photocard5Stars(Photocard):
     __trendy_up_boosts = [0, 35, 85, 175]
     __MAX_SIGNATURE = 5
     __MAX_TRENDY_UP = 3
+    __trendy_up_by_min_level = {0: 1, 1: 10, 2: 15, 3: 20}
 
     # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
     # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
@@ -438,6 +439,8 @@ class Photocard5Stars(Photocard):
             raise ValueError("Signature value must be from 0 to 5")
         if trendy_up > self.__MAX_TRENDY_UP:
             raise ValueError("Trendy Up value must be from 0 to 3")
+        if level < self.__trendy_up_by_min_level[trendy_up]:
+            raise ValueError(f"Trendy Up {trendy_up} is only possible from level {self.__trendy_up_by_min_level[trendy_up]}")
         if not isinstance(piece_shape, FiveSquareShape):
             raise ValueError("piece_shape must be a FiveSquareShape")
         super().__init__(name, level, piece_shape, piece_color)
@@ -457,7 +460,16 @@ class Photocard5Stars(Photocard):
             self._stats[stat] += points
 
     def set_level(self, level):
-        # This works but there can be a better implementation if level changes can be done without having to recalculate from level 1
+        # Set highest possible trendy up for the new level
+        if level < self.get_level():
+            new_trendy_up = 0
+            for trendy_up in range(3, -1, -1):
+                if level >= self.__trendy_up_by_min_level[trendy_up]:
+                    new_trendy_up = trendy_up
+                    break
+            if new_trendy_up != self.get_trendy_up():
+                print(f"Trendy Up set to {new_trendy_up} as the new level is under {self.__trendy_up_by_min_level[new_trendy_up]}")
+            self.set_trendy_up(new_trendy_up)
         super().set_level(level)
         self.__boost_stats(self.__signature_boosts[self.get_signature()] +
                            self.__trendy_up_boosts[self.get_trendy_up()])
@@ -525,3 +537,11 @@ class Photocard5Stars(Photocard):
         super().display_photocard_info()
         print(f"Signature: {self.get_signature()}")
         print(f"Trendy Up: {self.get_trendy_up()}")
+
+if __name__ == "__main__":
+    # card = Photocard1to4Stars("Leisurely JENNIE #4", 37)
+    # card.set_to_max_level()
+    # card.display_photocard_info()
+    card = Photocard5Stars("Christmas Eve JISOO", 25, FiveSquareShape.X, Color.GREEN, 0, 3)
+    card.set_level(1)
+    card.display_photocard_info()
