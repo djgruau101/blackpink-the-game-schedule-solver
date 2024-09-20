@@ -244,6 +244,7 @@ class Photocard(ABC):
         self.__member_name = self.check_member_name(name) # Get name of the Blackpink member
         self.__photocard_name = name
         self.__piece = Piece(piece_shape, piece_color)
+        self.__max_level_before_limit_break = 10 * self.get_stars()
         self.__base_points = self.rearranged_points_list(shape_by_base_stats[piece_shape].copy(), piece_color.value)
         self.__boosts = [self.rearranged_points_list(lst, piece_color.value) if isinstance(lst[0], int)
                          else [(tup[0], self.rearranged_points_list(tup[1], piece_color.value)) for tup in lst]
@@ -290,7 +291,7 @@ class Photocard(ABC):
             raise ValueError(f"level must be between 1 and {self.get_max_level()} inclusively")
         points = self.__base_points.copy()
         # Limit break boosts for 1 to 4-star photocards
-        if self.get_stars() < 5 and level > 10 * self.get_stars():
+        if self.get_stars() < 5 and level > self.__max_level_before_limit_break:
             piece_color_value = self.get_piece().get_color().value
             piece_shape = self.get_piece().get_shape()
             limit_break_boosts = [self.rearranged_points_list(lst, piece_color_value) for lst in shape_by_boosts_limit_break[piece_shape].copy()]
