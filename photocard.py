@@ -3,7 +3,7 @@ from shapes import Square, Domino, ThreeSquareShape, FourSquareShape, FiveSquare
 from colors import Color
 from globals import Stat, stats_names, member_names
 
-from abc import ABC
+from abc import ABC, abstractmethod
 import re
 
 piece_colors = ["Green", "Yellow", "Blue", "Red"]
@@ -20,8 +20,9 @@ five_square_shapes_strings = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
 suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
 
 # Stats are ordered in increasing order of strength
-# Assume all lucky photocards have [325, 475, 700, 1000] (T, F, Y, X, Z-MIRROR, N-MIRROR)
+# Assume all lucky photocards have [325, 475, 700, 1000] (T, F, Y, X, L, L-MIRROR Z, Z-MIRROR, N-MIRROR)
 # U: [475 625 670 730] if original boosts are maintained
+# P-MIRROR: [550 625 625 700]
 # So far: lucky -> +250 each
 shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
     Square.SQUARE: [24, 25, 25, 26],
@@ -55,57 +56,53 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
     FiveSquareShape.Z_MIRROR: [75, 225, 450, 750],
 }
 
-# May 2024 update: limit break
-# 1-star: [5,5,5,6] (to level 14), [5,6,6,5] (14 to 18), [5,5,5,7] (18 to 19), [11,12,12,11] (19 to 20)
-# 2-star: [9,12,12,13] (to level 24), [10,12,12,14] (24 to 29), [24,30,30,37] (29 to 30)
-# 3L: [16,16,23,27] (to level 34), [17,17,24,28] (34 to 38)
-# 3I: [12,21,21,28] (to level 34), [13,22,22,29] (34 to 38)
+# They changed some of the boosts smh
 shape_by_boosts = {
     Square.SQUARE: [[5, 5, 5, 5], [10, 10, 10, 10]],
     Domino.DOMINO: [[9, 11, 11, 13], [22, 27, 27, 32]],
     ThreeSquareShape.I: [[10, 18, 18, 25],
                          [11, 19, 19, 26],
                          [12, 20, 20, 27],
-                         [25, 23, 23, 49]],
+                         [18, 30, 30, 42]],
     ThreeSquareShape.L: [[14, 14, 20, 23],
                          [15, 15, 21, 24],
                          [16, 16, 22, 25],
                          [24, 24, 33, 39]],
-    FourSquareShape.I: [[9, 20, 31, 40],
-                        [9, 21, 32, 42],
-                        [11, 21, 33, 43],
-                        [13, 23, 32, 45],
-                        [22, 33, 43, 65]],
+    FourSquareShape.I: [[10, 20, 30, 40],
+                        [10, 21, 32, 41],
+                        [10, 21, 33, 44],
+                        [11, 23, 34, 45],
+                        [17, 33, 48, 65]],
     FourSquareShape.O: [[22, 25, 25, 28],
                         [23, 26, 26, 29],
                         [24, 27, 27, 30],
                         [25, 28, 28, 32],
-                        [31, 43, 43, 46]],
+                        [35, 41, 41, 46]],
     FourSquareShape.T: [[20, 20, 25, 35],
                         [21, 21, 26, 36],
-                        [22, 22, 26, 38],
-                        [22, 22, 29, 40],
-                        [32, 32, 44, 55]],
+                        [22, 22, 27, 37],
+                        [22, 22, 28, 41],
+                        [32, 32, 41, 58]],
     FourSquareShape.J: [[10, 25, 30, 35],
-                        [10, 27, 31, 36],
+                        [10, 26, 31, 37],
                         [10, 27, 33, 38],
-                        [12, 28, 34, 39],
-                        [22, 33, 44, 64]],
-    FourSquareShape.L: [[14, 20, 26, 40],
-                        [16, 20, 26, 42],
+                        [12, 29, 34, 38],
+                        [17, 40, 49, 57]],
+    FourSquareShape.L: [[15, 20, 25, 40],
+                        [15, 20, 26, 43], # 19 to 20: +16 for weak, +42 for strong exceptionally
                         [16, 22, 27, 43],
-                        [18, 23, 28, 44],
-                        [22, 33, 34, 74]],
+                        [17, 23, 29, 44],
+                        [25, 33, 40, 65]],
     FourSquareShape.S: [[15, 25, 25, 35],
                         [15, 26, 26, 37],
                         [17, 27, 27, 37],
                         [17, 29, 29, 38],
-                        [22, 34, 34, 73]],
+                        [24, 40, 40, 59]],
     FourSquareShape.Z: [[15, 20, 30, 35],
                         [15, 21, 31, 37],
                         [16, 21, 33, 38],
-                        [18, 23, 34, 38],
-                        [23, 33, 44, 63]],
+                        [17, 23, 34, 39],
+                        [25, 33, 48, 57]],
     FiveSquareShape.F: [[5, 18, 40, 70],
                         [6, 20, 42, 70],
                         [7, 22, 43, 71],
@@ -216,6 +213,25 @@ shape_by_boosts = {
                                [12, 44, 81, 140]],
 }
 
+# May 2024 update: limit break allows 1-4 star photocards to be levelled up 10 levels higher
+# 1-star: [5,5,5,6] (to level 14), [5,6,6,5] (14 to 18), [5,5,5,7] (18 to 19), [11,12,12,11] (19 to 20)
+# 2-star: [9,12,12,13] (to level 24), [10,12,12,14] (24 to 29), [24,30,30,37] (29 to 30)
+# 3L: [16,16,23,27] (to level 34), [17,17,24,28] (34 to 38)
+# 3I: [12,21,21,28] (to level 34), [13,22,22,29] (34 to 38)
+shape_by_boosts_limit_break = {
+    Square.SQUARE: [[5, 5, 5, 6], [5, 6, 6, 5], [5, 5, 5, 7], [11, 12, 12, 11]],  # ALL GOOD!
+    Domino.DOMINO: [[9, 12, 12, 13], [10, 12, 12, 14], [10, 12, 12, 14], [24, 30, 30, 37]], # ALL GOOD!
+    ThreeSquareShape.I: [[12, 21, 21, 28], [13, 22, 22, 29], [0, 0, 0, 0], [0, 0, 0, 0]], # so far so good
+    ThreeSquareShape.L: [[16, 16, 23, 27], [17, 17, 24, 28], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.I: [[12, 24, 36, 46], [13, 25, 38, 48], [13, 25, 38, 49], [19, 37, 57, 74]], # verified
+    FourSquareShape.O: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.T: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.J: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.L: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.S: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.Z: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+}
+
 
 class Photocard(ABC):
 
@@ -260,9 +276,9 @@ class Photocard(ABC):
         return [sum(pair) for pair in zip(points, total_boosts)]
     
     def calculate_stats(self, level):
-        """Takes the level of a photocard, calculates the score for each stat
+        """Takes the level of a photocard, calculates the score for each stat when the photocard is at said level
         and returns a dictionary consisting of (stat: score) pairs."""
-        # 1-2 stars: boost from max_level-1 to max_level is different than for all other levels
+         # 1-2 stars: boost from max_level-1 to max_level is different than for all other levels
         points = self.__base_points.copy()
         if self.get_stars() <= 2:
             # regular boost will be applied when levelling up to anywhere from 2 to the second-to-last level
@@ -468,4 +484,10 @@ class Photocard5Stars(Photocard):
         super().display_photocard_info()
         print(f"Signature: {self.get_signature()}")
         print(f"Trendy Up: {self.get_trendy_up()}")
-        
+
+
+if __name__ == "__main__":
+    one_to_four_star = Photocard1to4Stars("Leisurely LISA #4", 40)
+    one_to_four_star.display_photocard_info()
+    five_star = Photocard5Stars("Guest Greeting JENNIE #1", 24, FiveSquareShape.F_MIRROR, Color.BLUE, 5, 3)
+    five_star.display_photocard_info()
