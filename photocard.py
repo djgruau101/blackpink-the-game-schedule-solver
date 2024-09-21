@@ -218,16 +218,18 @@ shape_by_boosts = {
 }
 
 # May 2024 update: limit break allows 1-4 star photocards to be levelled up 10 levels higher
-# 1-star: [5,5,5,6] (to level 14), [5,6,6,5] (14 to 18), [5,5,5,7] (18 to 19), [11,12,12,11] (19 to 20)
-# 2-star: [9,12,12,13] (to level 24), [10,12,12,14] (24 to 29), [24,30,30,37] (29 to 30)
-# 3L: [16,16,23,27] (to level 34), [17,17,24,28] (34 to 38)
-# 3I: [12,21,21,28] (to level 34), [13,22,22,29] (34 to 38)
+# The first and second boosts are applied 4 times, the last two only once.
+# For 4-star photocards for example:
+# Boost 1 is applied from level 40 to 44
+# Boost 2 is applied from level 44 to 48
+# Boost 3 is applied from level 48 to 49
+# Boost 4 is applied from level 49 to 50
 # The boosts filled with 0s are the ones I haven't found yet (gotta farm stardust!)
 shape_by_boosts_limit_break = {
     Square.SQUARE: [[5, 5, 5, 6], [5, 6, 6, 5], [5, 5, 5, 7], [11, 12, 12, 11]],  # ALL GOOD!
     Domino.DOMINO: [[9, 12, 12, 13], [10, 12, 12, 14], [10, 12, 12, 14], [24, 30, 30, 37]],
     ThreeSquareShape.I: [[12, 21, 21, 28], [13, 22, 22, 29], [0, 0, 0, 0], [0, 0, 0, 0]],
-    ThreeSquareShape.L: [[16, 16, 23, 27], [17, 17, 24, 28], [0, 0, 0, 0], [0, 0, 0, 0]],
+    ThreeSquareShape.L: [[16, 16, 23, 27], [17, 17, 24, 28], [18, 18, 25, 29], [28, 28, 39, 43]],
     FourSquareShape.I: [[12, 24, 36, 46], [13, 25, 38, 48], [13, 25, 38, 49], [19, 37, 57, 74]],
     FourSquareShape.O: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FourSquareShape.T: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
