@@ -4,6 +4,7 @@ from colors import Color
 from globals import Stat, stats_names, member_names
 
 from abc import ABC, abstractmethod
+from enum import Enum
 import re
 
 piece_colors = ["Green", "Yellow", "Blue", "Red"]
@@ -19,12 +20,15 @@ five_square_shapes_strings = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
 
 suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
 
-# Stats are ordered in increasing order of strength
-# Assume all lucky photocards have [325, 475, 700, 1000] (T, F, Y, X, L, L-MIRROR Z, Z-MIRROR, N-MIRROR)
-# U: [475 625 670 730] if original boosts are maintained
-# P-MIRROR: [550 625 625 700]
-# So far: lucky -> +250 each
-shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
+
+class FiveStarPhotocardVersion(Enum):
+    BASE = 1
+    LUCKY = 2
+
+
+# Stats are ordered in increasing order of strength.
+# I still don't know all the base stats yet.
+shape_by_base_stats = {
     Square.SQUARE: [24, 25, 25, 26],
     Domino.DOMINO: [48, 60, 60, 72],
     ThreeSquareShape.I: [67, 112, 112, 159],
@@ -36,24 +40,42 @@ shape_by_base_stats = {  # for 1-4 star cards, the suit of the photocard determi
     FourSquareShape.L: [120, 160, 200, 320],
     FourSquareShape.S: [120, 200, 200, 280],
     FourSquareShape.Z: [120, 160, 240, 280],
-    FiveSquareShape.F: [75, 225, 450, 750],
-    FiveSquareShape.F_MIRROR: [75, 225, 450, 750],
-    FiveSquareShape.I: [75, 225, 450, 750],
-    FiveSquareShape.L: [75, 225, 450, 750],
-    FiveSquareShape.L_MIRROR: [75, 225, 450, 750],
-    FiveSquareShape.N: [75, 225, 450, 750],
-    FiveSquareShape.N_MIRROR: [75, 225, 450, 750],
-    FiveSquareShape.P: [300, 360, 375, 465],
-    FiveSquareShape.P_MIRROR: [300, 375, 375, 450],
-    FiveSquareShape.T: [75, 225, 450, 750],
-    FiveSquareShape.U: [225, 375, 420, 480],
-    FiveSquareShape.V: [0, 0, 0, 0],  # so far there are no photocards with this piece shape
-    FiveSquareShape.W: [150, 435, 450, 465],
-    FiveSquareShape.X: [75, 225, 450, 750],
-    FiveSquareShape.Y: [75, 225, 450, 750],
-    FiveSquareShape.Y_MIRROR: [75, 225, 450, 750],
-    FiveSquareShape.Z: [75, 225, 450, 750],
-    FiveSquareShape.Z_MIRROR: [75, 225, 450, 750],
+    FiveSquareShape.F: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.F_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                               FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+    FiveSquareShape.I: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+    FiveSquareShape.L: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.L_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                               FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.N: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+    FiveSquareShape.N_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                               FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.P: {FiveStarPhotocardVersion.BASE: [300, 360, 375, 465],
+                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+    FiveSquareShape.P_MIRROR: {FiveStarPhotocardVersion.BASE: [300, 375, 375, 450],
+                               FiveStarPhotocardVersion.LUCKY: [550, 625, 625, 700]},
+    FiveSquareShape.T: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.U: {FiveStarPhotocardVersion.BASE: [225, 375, 420, 480],
+                        FiveStarPhotocardVersion.LUCKY: [475, 625, 670, 730]},
+    FiveSquareShape.V: {FiveStarPhotocardVersion.BASE: [0, 0, 0, 0],
+                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},  # so far there are no photocards with this piece shape
+    FiveSquareShape.W: {FiveStarPhotocardVersion.BASE: [150, 435, 450, 465],
+                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+    FiveSquareShape.X: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.Y: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.Y_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                               FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+    FiveSquareShape.Z: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
+    FiveSquareShape.Z_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                               FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
 }
 
 # They changed some of the boosts smh
@@ -247,7 +269,7 @@ class Photocard(ABC):
         self.__photocard_name = name
         self.__piece = Piece(piece_shape, piece_color)
         self.__max_level_before_limit_break = 10 * self.get_stars()
-        self.__base_points = self.rearranged_points_list(shape_by_base_stats[piece_shape].copy(), piece_color.value)
+        self.__base_points = self._get_base_stats()
         self.__boosts = [self.rearranged_points_list(lst, piece_color.value) if isinstance(lst[0], int)
                          else [(tup[0], self.rearranged_points_list(tup[1], piece_color.value)) for tup in lst]
                          for lst in shape_by_boosts[piece_shape].copy()]
@@ -255,6 +277,11 @@ class Photocard(ABC):
             raise ValueError(f"This photocard's level must be between 1 to {self.get_max_level()}")
         self.__level = level
         self._stats = self.calculate_stats(level)
+
+    @abstractmethod
+    def _get_base_stats(self):
+        """Returns the stats of the photocard at level 1."""
+        pass
 
     @staticmethod
     def check_member_name(name):
@@ -397,13 +424,9 @@ class Photocard(ABC):
 
 class Photocard1to4Stars(Photocard):
     """For 1-4 star photocards, the shape of the piece is solely dictated by the name of the photocard."""
+
     def __init__(self, name, level):
-
-        # Get name of the Blackpink member
-        self.__member_name = self.check_member_name(name)
-
-        # Initialize member name, photocard name, level and piece
-        suit, color_number = [values.strip() for values in name.split(self.__member_name)]
+        suit, color_number = [values.strip() for values in name.split(self.check_member_name(name))]
         if suit not in suit_by_shape.keys():
             raise ValueError(f"The card name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
         if not re.match(r"#[1-4]", color_number):
@@ -417,7 +440,13 @@ class Photocard1to4Stars(Photocard):
         super().__init__(name, level, suit_by_shape[suit], piece_color)
         
     def __eq__(self, other):
-        return isinstance(other, Photocard1to4Stars) and self.get_piece() == other.get_piece() and self.get_member_name() == self.get_member_name()
+        if isinstance(other, Photocard1to4Stars):
+            return self.get_piece() == other.get_piece() and self.get_member_name() == self.get_member_name()
+        else:
+            return False
+    
+    def _get_base_stats(self):
+        return self.rearranged_points_list(shape_by_base_stats[self.get_piece_shape()].copy(), self.get_piece_color().value)
 
     def get_max_level(self):
         """The maximum level of a 1 to 4-star photocard used to be 10 * number of stars.
@@ -432,10 +461,6 @@ class Photocard5Stars(Photocard):
     __MAX_TRENDY_UP = 3
     __trendy_up_by_min_level = {0: 1, 1: 10, 2: 15, 3: 20}
 
-    # Trendy Up: +140 (+35 each), then +200 (+50 each, +340 total), then +360 (+700 total)
-    # Trendy Up 1: min level 10, Trendy Up 2: min level 15, Trendy Up 3: min level 20
-    # Signature 1: can be done at any level
-
     def __init__(self, name, level, piece_shape, piece_color, signature, trendy_up):
         if signature > self.__MAX_SIGNATURE:
             raise ValueError("Signature value must be from 0 to 5")
@@ -445,10 +470,22 @@ class Photocard5Stars(Photocard):
             raise ValueError(f"Trendy Up {trendy_up} is only possible from level {self.__trendy_up_by_min_level[trendy_up]}")
         if not isinstance(piece_shape, FiveSquareShape):
             raise ValueError("piece_shape must be a FiveSquareShape")
+        self.__version = FiveStarPhotocardVersion.LUCKY if name.startswith("Lucky ") else FiveStarPhotocardVersion.BASE
         super().__init__(name, level, piece_shape, piece_color)
         self.__signature = signature
         self.__trendy_up = trendy_up
         self.__boost_stats(self.__signature_boosts[signature] + self.__trendy_up_boosts[trendy_up])
+
+    def __eq__(self, other):
+        if isinstance(other, Photocard5Stars):
+            return self.get_piece() == other.get_piece() and self.get_photocard_name() == other.get_photocard_name
+        else:
+            return False
+        
+    def _get_base_stats(self):
+        """Returns the stats of the photocard at level 1."""
+        return self.rearranged_points_list(shape_by_base_stats[self.get_piece_shape()][self.get_photocard_version()].copy(),
+                                           self.get_piece_color().value)
 
     def __repr__(self):
         return super().__repr__() + f", signature={self.get_signature()}, trendy_up={self.get_trendy_up()})"
@@ -534,6 +571,12 @@ class Photocard5Stars(Photocard):
     
     def is_max_trendy_up(self):
         return self.get_trendy_up() == self.__MAX_TRENDY_UP
+
+    def get_photocard_version(self):
+        return self.__version
+    
+    def is_lucky(self):
+        return self.__version == FiveStarPhotocardVersion.LUCKY
     
     def display_photocard_info(self):
         super().display_photocard_info()
@@ -541,9 +584,11 @@ class Photocard5Stars(Photocard):
         print(f"Trendy Up: {self.get_trendy_up()}")
 
 if __name__ == "__main__":
-    # card = Photocard1to4Stars("Leisurely JENNIE #4", 37)
-    # card.set_to_max_level()
-    # card.display_photocard_info()
+    card = Photocard1to4Stars("Leisurely JENNIE #4", 37)
+    card.set_to_max_level()
+    card.display_photocard_info()
     card = Photocard5Stars("Christmas Eve JISOO", 25, FiveSquareShape.X, Color.GREEN, 0, 3)
     card.set_level(1)
+    card.display_photocard_info()
+    card = Photocard5Stars("Lucky LISA's Vanity", 50, FiveSquareShape.T, Color.RED, 4, 3)
     card.display_photocard_info()
