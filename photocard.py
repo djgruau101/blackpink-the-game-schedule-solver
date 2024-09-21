@@ -274,7 +274,7 @@ class Photocard(ABC):
                          else [(tup[0], self.rearranged_points_list(tup[1], piece_color.value)) for tup in lst]
                          for lst in shape_by_boosts[piece_shape].copy()]
         if level not in range(1, self.get_max_level() + 1):
-            raise ValueError(f"This photocard's level must be between 1 to {self.get_max_level()}")
+            raise ValueError(f"this photocard's level must be between 1 to {self.get_max_level()}")
         self.__level = level
         self._stats = self.calculate_stats(level)
 
@@ -292,7 +292,7 @@ class Photocard(ABC):
         # test if exactly one member name is in the photocard name
         member_name_set = set([word.strip("'s") for word in name.split(" ")]).intersection(member_names)
         if len(member_name_set) != 1:
-            raise ValueError("Name of the photocard must contain the name of exactly one Blackpink member")
+            raise ValueError("name of the photocard must contain the name of exactly one Blackpink member")
         return member_name_set.pop()
     
     @staticmethod
@@ -396,7 +396,7 @@ class Photocard(ABC):
 
     def set_level(self, level):
         if level not in range(1, self.get_max_level() + 1):
-            raise ValueError(f"The level of this card must range from 1 to {self.get_max_level()}")
+            raise ValueError(f"level of this card must range from 1 to {self.get_max_level()}")
         self.__level = level
         self._stats = self.calculate_stats(level)  # not the most optimal way to change points
 
@@ -428,9 +428,9 @@ class Photocard1to4Stars(Photocard):
     def __init__(self, name, level):
         suit, color_number = [values.strip() for values in name.split(self.check_member_name(name))]
         if suit not in suit_by_shape.keys():
-            raise ValueError(f"The card name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
+            raise ValueError(f"card name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
         if not re.match(r"#[1-4]", color_number):
-            raise ValueError("The end of the card name must end with '#' followed by a number from 1 to 4")
+            raise ValueError("end of the card name must end with '#' followed by a number from 1 to 4")
         color_number = int(color_number[1])  # the first character is '#'
         piece_color = None
         for color in Color:  # find color

@@ -4,10 +4,9 @@ from member import Member
 from globals import *
 
 class Schedule(object):
-    def __init__(self, board, conditions, remaining_turns):
-        self.__board = board
-        self.__conditions = conditions
-        self.__remaining_turns = remaining_turns
+
+    def __init__(self, boards):
+        self.__boards = boards  # there could be multiple boards
 
     def calculate_points_photocard(self, photocard, member):
         """Calculates the number of points given by a photocard played in full
@@ -15,12 +14,43 @@ class Schedule(object):
         stat = color_by_stat[photocard.get_piece_color()]
         return photocard.base_total_score() + member.get_stats_points()[stat]
     
+
+class ScheduleWithLimitedTurns(Schedule):
+
+    def __init__(self, boards, clear_conditions, remaining_turns):
+        self.__boards = boards
+        self.__clear_conditions = clear_conditions  # dictionary where keys are things to clear out, values are the quantity for those things
+        self.__remaining_turns = remaining_turns
+    
+
+class RegularSchedule(ScheduleWithLimitedTurns):
+    pass
+
+
+class MultiSchedule(ScheduleWithLimitedTurns):
+    pass
+    
+
+class SoloSchedule(ScheduleWithLimitedTurns):  # Behaves like regular schedules but photocards
+    pass
+
+
+class EventSchedule(ScheduleWithLimitedTurns): # implement the hammer, not sure how the recharge mechanic works...
+    pass
+
+
+class FestivalSchedule(Schedule):
+    # The only type of schedules where number of turns is unlimited
+    # Set of blocks can be uncovered after a certain condition is met (e.g. 5 yellow brushes are cleared)
+    pass
+
+    
 if __name__ == "__main__":
     s = Schedule([[0],[0]], ["d"], 4)
-    sooya = Member("JISOO", 16, 16, 16, 16)
-    jendeukie = Member("JENNIE", 16, 16, 16, 16)
-    chae = Member("ROSÉ", 17, 16, 16, 16)
-    lalisa = Member("LISA", 16, 16, 16, 16)
+    sooya = Member("JISOO", 26, 26, 26, 26)
+    jendeukie = Member("JENNIE", 26, 26, 26, 26)
+    chae = Member("ROSÉ", 26, 26, 26, 26)
+    lalisa = Member("LISA", 26, 26, 26, 26)
     p = Photocard1to4Stars("Bored ROSÉ #1", 10)
     members = [sooya, jendeukie, chae, lalisa]
 
@@ -533,9 +563,9 @@ if __name__ == "__main__":
 # Level 15: [6267, 3108, 1767, 952, 401], [6407, 3177, 1806, 973, 410]
 # Level 16: [6405, 3176, 1806, 973, 409], [6545, 3246, 1845, 994, 418]
 # Level 17: [6543, 3245, 1845, 994, 418], [6683, 3314, 1884, 1015, 427]
-# Level 18: [6681, 3313, 1884, 1015, 427]
-# Level 19: [6819, 3382, 1922, 1036, 436]
-# Level 20: [6957, 3450, 1961, 1057, 445]
+# Level 18: [6681, 3313, 1884, 1015, 427], [6821, 3383, 1923, 1036, 436]
+# Level 19: [6819, 3382, 1922, 1036, 436], [6959, 3451, 1962, 1057, 445]
+# Level 20: [6957, 3450, 1961, 1057, 445], [7097, 3520, 2001, 1078, 454]
 # Level 21: [7100, 3521, 2002, 1079, 454]
 # Level 22: [7243, 3592, 2042, 1100, 463]
 # Level 23: [7386, 3663, 2082, 1122, 472]
@@ -633,6 +663,9 @@ if __name__ == "__main__":
 # Level 11: [6435, 3191, 1814, 978, 411]
 # Level 12: [6573, 3260, 1853, 999, 420]
 # Level 13: [6711, 3328, 1892, 1020, 429]
+# Level 14: [6849, 3397, 1931, 1041, 438]
+# Level 15: [6987, 3465, 1970, 1062, 447]
+# Level 16: [7125, 3534, 2009, 1083, 456]
 #
 # Turns remaining after clearing schedule: bonus of floor((total score)/20) per turn remaining
 # Bonuses in festival schedules: bonuses are applied on the sum BEFORE member stat
