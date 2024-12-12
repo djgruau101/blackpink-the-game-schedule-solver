@@ -240,13 +240,39 @@ shape_by_boosts = {
 }
 
 # May 2024 update: limit break allows 1-4 star photocards to be levelled up 10 levels higher
-# The first and second boosts are applied 4 times, the last two only once.
+# December 2024 update: limit break applied to 5-star photocards
+# For 1-4 star photocards, first and second boosts are applied 4 times, the last two only once
+
+
+
+# 5-star photocards limit break (every boost is for every level):
+# F: [8, 25, 48, 80], [8, 24, 49, 80]
+# F-MIRROR:
+# I:
+# I-MIRROR:
+# L:
+# L-MIRROR:
+# N:
+# N-MIRROR:
+# P:
+# P-MIRROR: [32, 41, 41, 47], [32, 40, 40, 49]
+# T: [8, 25, 48, 80], [8, 24, 49, 80]
+# U: [24, 41, 45, 51], [25, 40, 45, 51]
+# V:
+# W: [16, 47, 48, 50], [16, 47, 49, 49]
+# X:
+# Y:
+# Y-MIRROR:
+# Z:
+# Z-MIRROR:
+
 # For 4-star photocards for example:
 # Boost 1 is applied from level 40 to 44
 # Boost 2 is applied from level 44 to 48
 # Boost 3 is applied from level 48 to 49
 # Boost 4 is applied from level 49 to 50
-# The boosts filled with 0s are the ones I haven't found yet (gotta farm stardust!)
+# The boosts filled with 0s are the ones I haven't found yet (gotta farm stardust and dream puzzles!)
+# I still need to find the pattern in the boosts for 5-star photocards
 shape_by_boosts_limit_break = {
     Square.SQUARE: [[5, 5, 5, 6], [5, 6, 6, 5], [5, 5, 5, 7], [11, 12, 12, 11]],  # ALL GOOD!
     Domino.DOMINO: [[9, 12, 12, 13], [10, 12, 12, 14], [10, 12, 12, 14], [24, 30, 30, 37]],
@@ -259,6 +285,24 @@ shape_by_boosts_limit_break = {
     FourSquareShape.L: [[0, 0, 0, 0], [19, 25, 31, 49], [19, 25, 32, 49], [29, 37, 47, 74]],
     FourSquareShape.S: [[0, 0, 0, 0], [18, 31, 31, 44], [0, 0, 0, 0], [28, 46, 46, 67]],
     FourSquareShape.Z: [[18, 24, 35, 41], [19, 25, 37, 43], [19, 25, 37, 44], [29, 37, 56, 65]],
+    FiveSquareShape.F: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.F_MIRROR: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.I: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.L: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.L_MIRROR: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.N: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.N_MIRROR: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.P: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.P_MIRROR: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.T: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.U: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.V: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], # there are no photocards with a piece of this shape so far
+    FiveSquareShape.W: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.X: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.Y: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.Y_MIRROR: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.Z: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FiveSquareShape.Z_MIRROR: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
 }
 
 
