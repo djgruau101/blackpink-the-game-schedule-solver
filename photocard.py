@@ -253,12 +253,12 @@ shape_by_boosts_limit_break = {
     ThreeSquareShape.I: [[12, 21, 21, 28], [13, 22, 22, 29], [0, 0, 0, 0], [0, 0, 0, 0]],
     ThreeSquareShape.L: [[16, 16, 23, 27], [17, 17, 24, 28], [18, 18, 25, 29], [28, 28, 39, 43]],
     FourSquareShape.I: [[12, 24, 36, 46], [13, 25, 38, 48], [13, 25, 38, 49], [19, 37, 57, 74]],
-    FourSquareShape.O: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-    FourSquareShape.T: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-    FourSquareShape.J: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-    FourSquareShape.L: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-    FourSquareShape.S: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-    FourSquareShape.Z: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.O: [[26, 30, 30, 32], [27, 31, 31, 35], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.T: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [37, 37, 46, 67]],
+    FourSquareShape.J: [[12, 30, 36, 40], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+    FourSquareShape.L: [[0, 0, 0, 0], [19, 25, 31, 49], [19, 25, 32, 49], [29, 37, 47, 74]],
+    FourSquareShape.S: [[0, 0, 0, 0], [18, 31, 31, 44], [0, 0, 0, 0], [28, 46, 46, 67]],
+    FourSquareShape.Z: [[18, 24, 35, 41], [19, 25, 37, 43], [19, 25, 37, 44], [29, 37, 56, 65]],
 }
 
 
@@ -582,6 +582,7 @@ class Photocard5Stars(Photocard):
         super().display_photocard_info()
         print(f"Signature: {self.get_signature()}")
         print(f"Trendy Up: {self.get_trendy_up()}")
+
 
 if __name__ == "__main__":
     card = Photocard1to4Stars("Leisurely JENNIE #4", 37)
