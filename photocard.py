@@ -18,7 +18,7 @@ five_square_shapes_strings = ["F", "F-MIRROR", "I", "L", "L-MIRROR",
                               "T", "U", "V", "W", "X",
                               "Y", "Y-MIRROR", "Z", "Z-MIRROR"]
 
-suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star cards, the suit of the photocard determines the shape of the piece
+suit_by_shape = dict(zip(suits, shapes_1_to_4_stars))  # for 1-4 star photocards, the suit of the photocard determines the shape of the piece
 
 
 class FiveStarPhotocardVersion(Enum):
@@ -260,10 +260,10 @@ shape_by_boosts = {
 # U: [24, 41, 45, 51], [25, 40, 45, 51]
 # V:
 # W: [16, 47, 48, 50], [16, 47, 49, 49]
-# X:
+# X: [8, 25, 48, 80], [8, 24, 49, 80]
 # Y:
 # Y-MIRROR:
-# Z:
+# Z: [8, 25, 48, 80], [8, 24, 49, 80]
 # Z-MIRROR:
 
 # For 4-star photocards for example:
@@ -440,7 +440,7 @@ class Photocard(ABC):
 
     def set_level(self, level):
         if level not in range(1, self.get_max_level() + 1):
-            raise ValueError(f"level of this card must range from 1 to {self.get_max_level()}")
+            raise ValueError(f"level of this photocard must range from 1 to {self.get_max_level()}")
         self.__level = level
         self._stats = self.calculate_stats(level)  # not the most optimal way to change points
 
@@ -472,9 +472,9 @@ class Photocard1to4Stars(Photocard):
     def __init__(self, name, level):
         suit, color_number = [values.strip() for values in name.split(self.check_member_name(name))]
         if suit not in suit_by_shape.keys():
-            raise ValueError(f"card name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
+            raise ValueError(f"name for a 1-4 star photocard should start with either of the following:\n{', '.join(suit_by_shape.keys())}")
         if not re.match(r"#[1-4]", color_number):
-            raise ValueError("end of the card name must end with '#' followed by a number from 1 to 4")
+            raise ValueError("end of the photocard name must end with '#' followed by a number from 1 to 4")
         color_number = int(color_number[1])  # the first character is '#'
         piece_color = None
         for color in Color:  # find color
