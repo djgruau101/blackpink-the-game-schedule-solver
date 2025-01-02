@@ -43,19 +43,19 @@ shape_by_base_stats = {
     FiveSquareShape.F: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
                         FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.F_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
-                               FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+                               FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.I: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
-                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.L: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
                         FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.L_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
                                FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.N: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
-                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.N_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
                                FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.P: {FiveStarPhotocardVersion.BASE: [300, 360, 375, 465],
-                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+                        FiveStarPhotocardVersion.LUCKY: [550, 610, 625, 715]},
     FiveSquareShape.P_MIRROR: {FiveStarPhotocardVersion.BASE: [300, 375, 375, 450],
                                FiveStarPhotocardVersion.LUCKY: [550, 625, 625, 700]},
     FiveSquareShape.T: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
@@ -65,13 +65,13 @@ shape_by_base_stats = {
     FiveSquareShape.V: {FiveStarPhotocardVersion.BASE: [0, 0, 0, 0],
                         FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},  # so far there are no photocards with this piece shape
     FiveSquareShape.W: {FiveStarPhotocardVersion.BASE: [150, 435, 450, 465],
-                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+                        FiveStarPhotocardVersion.LUCKY: [400, 685, 700, 715]},
     FiveSquareShape.X: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
                         FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.Y: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
                         FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.Y_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
-                               FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},
+                               FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.Z: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
                         FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.Z_MIRROR: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
@@ -249,7 +249,6 @@ shape_by_boosts = {
 # F: [8, 25, 48, 80], [8, 24, 49, 80]
 # F-MIRROR:
 # I:
-# I-MIRROR:
 # L:
 # L-MIRROR: [8, 25, 48, 80], [8, 24, 49, 80], [8, 24, 48, 81], [9, 24, 48, 80], [8, 25, 51, 85], [8, 26, 51, 84], [9, 25, 50, 85], [8, 26, 51, 84], [8, 25, 51, 85], [16, 47, 95, 158] 
 # N:
