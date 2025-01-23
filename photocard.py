@@ -27,7 +27,6 @@ class FiveStarPhotocardVersion(Enum):
 
 
 # Stats are ordered in increasing order of strength.
-# I still don't know all the base stats yet.
 shape_by_base_stats = {
     Square.SQUARE: [24, 25, 25, 26],
     Domino.DOMINO: [48, 60, 60, 72],
@@ -254,7 +253,7 @@ shape_by_boosts = {
 # N:
 # N-MIRROR:
 # P:
-# P-MIRROR: [32, 41, 41, 47], [32, 40, 40, 49]
+# P-MIRROR: [32, 41, 41, 47], [32, 40, 40, 49], [33, 40, 40, 48], [31, 41, 41, 48], [34, 42, 42, 51], [34, 42, 42, 51]
 # T: [8, 25, 48, 80], [8, 24, 49, 80]
 # U: [24, 41, 45, 51], [25, 40, 45, 51], [24, 40, 45, 52], [24, 41, 45, 51], [25, 42, 48, 54], [26, 42, 47, 54], [25, 42, 47, 55], [25, 43, 48, 53], [26, 42, 47, 54], [47, 79, 88, 102]
 # V:
