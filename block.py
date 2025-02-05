@@ -12,7 +12,7 @@ class BlockType(Enum):
     LISA = 9
     DOUBLE = 10
     DOUBLE_CRACKED = 11
-    CRATE = 12
+    BOX = 12
 
 
 class BrushColor(Enum):
@@ -68,3 +68,6 @@ if __name__ == "__main__":
     b1 = Block(BlockType.NORMAL, False, BrushColor.BLUE)
     b1.add_brush(BrushColor.BLUE)
     print(b1.get_block_type())
+
+    # test out rainbow blocks: blue->red->green->yellow, Jisoo->Jennie->Rosé->Lisa
+    # Walls: level 45
