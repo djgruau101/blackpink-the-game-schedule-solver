@@ -343,7 +343,8 @@ class Photocard(ABC):
         an adjusted verison of it where each score correspond to its respective stat.
         The first stat is for music (green), the second stat is for acting (yellow),
         the third stat is for fashion (blue) and the last stat is for charm (red)."""
-        return lst[-1 * n % len(Color):] + lst[:-1 * n % len(Color)]
+        nb_colors = len(Color)
+        return lst[-1 * n % nb_colors:] + lst[:-1 * n % nb_colors]
     
     @staticmethod
     def updated_score(points, boosts, level_increase=1):
