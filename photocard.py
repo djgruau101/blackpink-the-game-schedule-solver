@@ -61,8 +61,8 @@ shape_by_base_stats = {
                         FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},
     FiveSquareShape.U: {FiveStarPhotocardVersion.BASE: [225, 375, 420, 480],
                         FiveStarPhotocardVersion.LUCKY: [475, 625, 670, 730]},
-    FiveSquareShape.V: {FiveStarPhotocardVersion.BASE: [0, 0, 0, 0],
-                        FiveStarPhotocardVersion.LUCKY: [0, 0, 0, 0]},  # so far there are no photocards with this piece shape
+    FiveSquareShape.V: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
+                        FiveStarPhotocardVersion.LUCKY: [325, 475, 700, 1000]},  # so far there are no photocards with this piece shape
     FiveSquareShape.W: {FiveStarPhotocardVersion.BASE: [150, 435, 450, 465],
                         FiveStarPhotocardVersion.LUCKY: [400, 685, 700, 715]},
     FiveSquareShape.X: {FiveStarPhotocardVersion.BASE: [75, 225, 450, 750],
@@ -194,12 +194,12 @@ shape_by_boosts = {
                         [23, 37, 41, 47],
                         [24, 39, 43, 48],   
                         [44, 69, 73, 91]],
-    FiveSquareShape.V: [[],
-                        [],
-                        [],
-                        [],
-                        [],
-                        []], # there are no photocards with a piece of this shape so far
+    FiveSquareShape.V: [[5, 18, 40, 70],
+                        [6, 20, 42, 70],
+                        [7, 22, 43, 71],
+                        [8, 23, 44, 73],
+                        [10, 24, 46, 74],
+                        [12, 44, 81, 140]], # there are no photocards with a piece of this shape so far
     FiveSquareShape.W: [[12, 39, 40, 42],
                         [13, 40, 42, 43],
                         [15, 42, 43, 43],
@@ -246,7 +246,7 @@ shape_by_boosts = {
 
 # 5-star photocards limit break (every boost is for every level):
 # F: [8, 25, 48, 80], [8, 24, 49, 80]
-# F-MIRROR:
+# F-MIRROR: [8, 25, 48, 80], [8, 24, 49, 80], [8, 24, 48, 81], [9, 24, 48, 80]
 # I:
 # L:
 # L-MIRROR: [8, 25, 48, 80], [8, 24, 49, 80], [8, 24, 48, 81], [9, 24, 48, 80], [8, 25, 51, 85], [8, 26, 51, 84], [9, 25, 50, 85], [8, 26, 51, 84], [8, 25, 51, 85], [16, 47, 95, 158] 
