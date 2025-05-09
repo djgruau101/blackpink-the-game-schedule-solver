@@ -199,7 +199,7 @@ shape_by_boosts = {
                         [7, 22, 43, 71],
                         [8, 23, 44, 73],
                         [10, 24, 46, 74],
-                        [12, 44, 81, 140]], # there are no photocards with a piece of this shape so far
+                        [12, 44, 81, 140]],
     FiveSquareShape.W: [[12, 39, 40, 42],
                         [13, 40, 42, 43],
                         [15, 42, 43, 43],
@@ -294,7 +294,7 @@ shape_by_boosts_limit_break = {
     FiveSquareShape.P_MIRROR: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FiveSquareShape.T: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FiveSquareShape.U: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-    FiveSquareShape.V: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], # there are no photocards with a piece of this shape so far
+    FiveSquareShape.V: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FiveSquareShape.W: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FiveSquareShape.X: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
     FiveSquareShape.Y: [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
