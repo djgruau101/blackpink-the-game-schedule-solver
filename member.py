@@ -10,7 +10,7 @@ class Member(object):
                       1392, 1485, 1581, 1681,
                       1784, 1891, 2001, 2115,
                       2233, 2355, 2481, 2611,
-                      2746]  # the score of a stat is at level (its index + 1)
+                      2746, 2885]  # the score of a stat is at level (its index + 1)
 
     def __init__(self, name, music_level, acting_level,
                 fashion_level, charm_level):
@@ -93,5 +93,5 @@ class Member(object):
         print("|".join([f"{stats_names[stat.value - 1]}: {level}" for stat, level in self.get_stats_levels().items()]))
         print(f"{self.get_number_of_photocards()} photocards")
 
-# Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749, 820, 894, 970, 1049, 1131, 1215, 1302, 1392, 1485, 1581, 1681, 1784, 1891, 2001, 2115, 2233, 2355, 2481, 2611, 2746
-# Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69, 71, 74, 76, 79, 82, 84, 87, 90, 93, 96, 100, 103, 107, 110, 114, 118, 122, 126, 130, 135
+# Member stats: 100, 150, 201, 254, 309, 366, 425, 485, 548, 613, 680, 749, 820, 894, 970, 1049, 1131, 1215, 1302, 1392, 1485, 1581, 1681, 1784, 1891, 2001, 2115, 2233, 2355, 2481, 2611, 2746, 2885
+# Increases: 50, 51, 53, 55, 57, 59, 60, 63, 65, 67, 69, 71, 74, 76, 79, 82, 84, 87, 90, 93, 96, 100, 103, 107, 110, 114, 118, 122, 126, 130, 135, 139
