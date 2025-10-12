@@ -10,7 +10,8 @@ class Member(object):
                       1392, 1485, 1581, 1681,
                       1784, 1891, 2001, 2115,
                       2233, 2355, 2481, 2611,
-                      2746, 2885, 3029, 3178]  # the score of a stat is at level (its index + 1)
+                      2746, 2885, 3029, 3178,
+                      3332]  # the score of a stat is at level (its index + 1)
 
     def __init__(self, name, music_level, acting_level,
                 fashion_level, charm_level):
